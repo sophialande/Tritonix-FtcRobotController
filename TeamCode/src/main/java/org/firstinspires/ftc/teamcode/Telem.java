@@ -26,7 +26,7 @@ import java.util.Map;
  * OPPONENT A LEG UP.
  */
 
-public class telem {
+public class Telem {
 
     // Creates a map, made out of a list of pairs of string, the first string is the key and the
     // second is the value. This is searchable by the value. It will be printed as telem data.

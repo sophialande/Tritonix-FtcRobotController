@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.auto;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
@@ -9,14 +9,16 @@ import static java.lang.Math.sin;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class driver {
+import org.firstinspires.ftc.teamcode.Telem;
+
+public class Driver {
 
     static DcMotor fr = hardwareMap.get(DcMotor.class, "fr");
     static DcMotor fl = hardwareMap.get(DcMotor.class, "fl");
     static DcMotor br = hardwareMap.get(DcMotor.class, "br");
     static DcMotor bl = hardwareMap.get(DcMotor.class, "bl");
 
-    public static void drive(double speed, double in, double degrees) {
+    public static void drive(double speed, double cm, double degrees) {
 
         degrees = -degrees;
 
@@ -26,7 +28,7 @@ public class driver {
         br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        int ticks = (int) (in * 8.753);
+        int ticks = (int) (cm * 22.233);
 
         double radians = degrees * PI / 180;
 
@@ -60,7 +62,7 @@ public class driver {
             // Update the telem data
             telemetry.addData("Running to", "Font Right and Back Left: " + frblTicks + " | Front Left and Back Right: " + flbrTicks);
             telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
-            telem.update();
+            Telem.update();
         }
 
         // Stop the motors
@@ -104,7 +106,7 @@ public class driver {
             // Update the telem data
             telemetry.addData("Running to", "Left " + ticks + " | Right: " + -ticks);
             telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
-            telem.update();
+            Telem.update();
         }
 
         // Stop the motors
