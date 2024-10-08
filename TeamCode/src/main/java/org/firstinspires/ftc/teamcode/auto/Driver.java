@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import static java.lang.Math.PI;
@@ -10,13 +9,9 @@ import static java.lang.Math.sin;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Telem;
+import static org.firstinspires.ftc.teamcode.Ports.*;
 
 public class Driver {
-
-    static DcMotor fr = hardwareMap.get(DcMotor.class, "fr");
-    static DcMotor fl = hardwareMap.get(DcMotor.class, "fl");
-    static DcMotor br = hardwareMap.get(DcMotor.class, "br");
-    static DcMotor bl = hardwareMap.get(DcMotor.class, "bl");
 
     public static void drive(double speed, double cm, double degrees) {
 
