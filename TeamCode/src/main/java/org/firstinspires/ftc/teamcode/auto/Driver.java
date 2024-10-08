@@ -20,7 +20,29 @@ public class Driver {
 
     public static void drive(double speed, double cm, double degrees) {
 
-        degrees = -degrees;
+        double frblMultiplier;
+        double flbrMultiplier;
+
+        if (degrees % 360 == 0) {
+            frblMultiplier = 1;
+            flbrMultiplier = 1;
+        } else if (degrees % 360 == 90) {
+            frblMultiplier = 1;
+            flbrMultiplier = -1;
+        } else if (degrees % 360 == 180) {
+            frblMultiplier = -1;
+            flbrMultiplier = -1;
+        } else if (degrees % 360 == 270) {
+            frblMultiplier = -1;
+            flbrMultiplier = 1;
+        } else {
+            degrees = -degrees;
+
+            double radians = degrees * PI / 180;
+
+            frblMultiplier = cos(radians)-sin(radians);
+            flbrMultiplier = cos(radians)+sin(radians);
+        }
 
         // Reset the tick encoders to zero
         fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -29,11 +51,6 @@ public class Driver {
         bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         int ticks = (int) (cm * 22.233);
-
-        double radians = degrees * PI / 180;
-
-        double frblMultiplier = cos(radians)-sin(radians);
-        double flbrMultiplier = cos(radians)+sin(radians);
 
         int frblTicks = (int) (ticks * frblMultiplier);
         int flbrTicks = (int) (ticks * flbrMultiplier);
