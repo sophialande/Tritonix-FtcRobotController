@@ -13,11 +13,14 @@ import static org.firstinspires.ftc.teamcode.Ports.*;
 
 public class Driver {
 
+    //drive function, input speed, distance in cm, and degree angle of the movement
     public static void drive(double speed, double cm, double degrees) {
 
+        //Instantiate the multipliers that will control the speed of each wheel
         double frblMultiplier;
         double flbrMultiplier;
 
+        //Determine the multipliers (some quick lookups and a general case if they lookups don't apply)
         if (degrees % 360 == 0) {
             frblMultiplier = 1;
             flbrMultiplier = 1;
@@ -31,6 +34,7 @@ public class Driver {
             frblMultiplier = -1;
             flbrMultiplier = 1;
         } else {
+            //General case to determine the multipliers
             degrees = -degrees;
 
             double radians = degrees * PI / 180;
@@ -45,8 +49,10 @@ public class Driver {
         br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //Calculate the number of ticks based on the distance and a conversion constant
         int ticks = (int) (cm * 22.233);
 
+        //Calculate the number of ticks required for each motor to move
         int frblTicks = (int) (ticks * frblMultiplier);
         int flbrTicks = (int) (ticks * flbrMultiplier);
 
@@ -68,7 +74,7 @@ public class Driver {
         br.setPower(speed * flbrMultiplier);
         bl.setPower(speed * frblMultiplier);
 
-        // Run while both motors are moving
+        // Run while the motors are moving
         while (fr.isBusy()) {
 
             // Update the telem data
@@ -93,6 +99,7 @@ public class Driver {
         br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        //Convert from degrees to ticks
         int ticks = (int) (degrees * 15.6);
 
         // set the target position
