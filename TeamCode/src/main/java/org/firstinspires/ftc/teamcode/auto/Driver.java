@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Telem;
@@ -14,7 +13,7 @@ import static org.firstinspires.ftc.teamcode.Ports.*;
 public class Driver {
 
     //drive function, input speed, distance in cm, and degree angle of the movement
-    public static void drive(double speed, double cm, double degrees) {
+    public static void drive(LinearOpMode opMode, double speed, double cm, double degrees) {
 
         //Instantiate the multipliers that will control the speed of each wheel
         double frblMultiplier;
@@ -78,9 +77,9 @@ public class Driver {
         while (fr.isBusy()) {
 
             // Update the telem data
-            telemetry.addData("Running to", "Font Right and Back Left: " + frblTicks + " | Front Left and Back Right: " + flbrTicks);
-            telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
-            Telem.update();
+            opMode.telemetry.addData("Running to", "Font Right and Back Left: " + frblTicks + " | Front Left and Back Right: " + flbrTicks);
+            opMode.telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
+            Telem.update(opMode);
         }
 
         // Stop the motors
@@ -91,7 +90,7 @@ public class Driver {
 
     }
 
-    public static void rotate(double speed, double degrees){
+    public static void rotate(LinearOpMode opMode, double speed, double degrees){
 
         // Reset the tick encoders to zero
         fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -123,9 +122,9 @@ public class Driver {
         // Run while both motors are moving
         while (fr.isBusy()) {
             // Update the telem data
-            telemetry.addData("Running to", "Left " + ticks + " | Right: " + -ticks);
-            telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
-            Telem.update();
+            opMode.telemetry.addData("Running to", "Left " + ticks + " | Right: " + -ticks);
+            opMode.telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
+            Telem.update(opMode);
         }
 
         // Stop the motors

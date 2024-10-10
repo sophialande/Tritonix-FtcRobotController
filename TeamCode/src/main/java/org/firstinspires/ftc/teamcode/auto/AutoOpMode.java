@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.Ports;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 //Create an opmode class
 @Config
@@ -16,23 +17,24 @@ public class AutoOpMode extends LinearOpMode {
     @Override
     public void runOpMode(){
         //initialize
-        Ports.init();
+        Ports.init(this);
 
         //wait for the game to start
         waitForStart();
 
+        double speed = 0.7;
         //do a little test dance.
-        drive(1, 30, 0);
-        drive(1, 60, 180);
-        drive(1, 42.426, -45);
-        drive(1, 60, 90);
-        drive(1, 30,  270);
-        rotate(1, 180);
-        drive(1, 30, 180);
-        drive(1, 60, 0);
-        drive(1, 42.426, 45);
-        drive(1, 60, 270);
-        drive(1, 30,  90);
-        rotate(1, 180);
+        drive(this, speed, 15, 0);
+        drive(this, speed, 30, 180);
+        drive(this, speed, 21.213, -45);
+        drive(this, speed, 30, 90);
+        drive(this, speed, 15, -90);
+        rotate(this, speed,180);
+        drive(this, speed, 15, 0);
+        drive(this, speed, 30, 180);
+        drive(this, speed, 21.213, -45);
+        drive(this, speed, 30, 90);
+        drive(this, speed, 15, -90);
+        rotate(this, speed,180);
     }
 }

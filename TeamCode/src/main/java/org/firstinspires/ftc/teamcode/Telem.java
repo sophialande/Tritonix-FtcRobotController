@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,12 +46,12 @@ public class Telem {
     }
 
     // Call as telem.update("", "") and include any temp before calling
-    public static void update() {
+    public static void update(LinearOpMode opMode) {
         // Goes through every pair in the list and adds them to the telemetry output before
         // updating.
         for (Map.Entry<String, String> me: permanentTelems.entrySet()) {
-            telemetry.addData(me.getKey(), me.getValue());
+            opMode.telemetry.addData(me.getKey(), me.getValue());
         }
-        telemetry.update();
+        opMode.telemetry.update();
     }
 }

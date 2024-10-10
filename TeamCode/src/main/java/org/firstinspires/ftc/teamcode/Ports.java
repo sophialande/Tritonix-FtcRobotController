@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class Ports {
@@ -15,18 +14,21 @@ public class Ports {
     public static DcMotor bl;
 
     //DO INITIALIZATION STEPS HERE
-    public static void init(){
+    public static void init(LinearOpMode opMode){
 
         //Set the motor variables to their respective motors
-        fr = hardwareMap.get(DcMotor.class, "fr");
-        fl = hardwareMap.get(DcMotor.class, "fr");
-        br = hardwareMap.get(DcMotor.class, "fr");
-        bl = hardwareMap.get(DcMotor.class, "fr");
+        fr = opMode.hardwareMap.get(DcMotor.class, "FR");
+        fl = opMode.hardwareMap.get(DcMotor.class, "FL");
+        br = opMode.hardwareMap.get(DcMotor.class, "BR");
+        bl = opMode.hardwareMap.get(DcMotor.class, "BL");
 
         //Set the motors to run using the encoder
         fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        fl.setDirection(DcMotor.Direction.REVERSE);
+        bl.setDirection(DcMotor.Direction.REVERSE);
     }
 }
