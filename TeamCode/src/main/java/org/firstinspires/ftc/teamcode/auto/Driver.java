@@ -42,6 +42,11 @@ public class Driver {
             flbrMultiplier = cos(radians)+sin(radians);
         }
 
+        //Debug (if power level caps)
+        if (speed*frblMultiplier > 1 || speed*flbrMultiplier > 1) {
+            Telem.add("Drive Status", "The set speed and direction has maxed out the speed of one of the wheels. Direction and speed may not be accurate");
+        }
+
         // Reset the tick encoders to zero
         fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -81,6 +86,8 @@ public class Driver {
             opMode.telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
             Telem.update(opMode);
         }
+
+        Telem.remove("Drive Status");
 
         // Stop the motors
         fr.setPower(0);
