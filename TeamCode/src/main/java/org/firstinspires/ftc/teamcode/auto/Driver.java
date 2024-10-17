@@ -10,6 +10,28 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Telem;
 import static org.firstinspires.ftc.teamcode.Ports.*;
 
+/*
+ * USAGE GUIDE:
+ *
+ * The Driver class allows you to actually move to robot around using the wheels, there are two
+ * functions in the driver class: drive and rotate.
+ *
+ * Driver.drive(a, b, c, d) can move the robot in any direction you want for any distance you want
+ * at any speed you want. The first parameter (a) is the opMode. If you are calling this from the
+ * opMode simply pass in "this" (without the quote marks), if you are calling this from somewhere
+ * else that already had the opMode passed into it, pass "opMode" (without the quote marks). Next is
+ * the speed (b), which can be anywhere from -1 to 1 and specifies how fast the robot moves, the
+ * faster you go, though, the less precise you are. Third is distance in cm (c), this tells the
+ * robot how far to travel at that speed, if the speed is anywhere above ~0.5 it might drift a
+ * little at the end. Finally the angle you want to robot to move at (d); input any degree value and
+ * that is the direction the robot will move (counterclockwise) without rotating!
+ *
+ * Driver.rotate(a, b, c) just like in the previous function a is the opMode, bass in this or opMode
+ * depending on your situation. Next is the speed (b) that you would like it to rotate at, this is
+ * again a scale from -1 to 1. Finally the number of degrees you would like to rotate (c) in the
+ * clockwise direction. Remember that if you set the speed to high you might overshoot the rotation.
+ */
+
 public class Driver {
 
     //drive function, input speed, distance in cm, and degree angle of the movement
@@ -18,31 +40,6 @@ public class Driver {
         //Instantiate the multipliers that will control the speed of each wheel
         double frblMultiplier;
         double flbrMultiplier;
-
-        /*
-        //Determine the multipliers (some quick lookups and a general case if they lookups don't apply)
-        if (degrees % 360 == 0) {
-            frblMultiplier = 1;
-            flbrMultiplier = 1;
-        } else if (degrees % 360 == 90) {
-            frblMultiplier = -1;
-            flbrMultiplier = 1;
-        } else if (degrees % 360 == 180) {
-            frblMultiplier = -1;
-            flbrMultiplier = -1;
-        } else if (degrees % 360 == 270) {
-            frblMultiplier = 1;
-            flbrMultiplier = -1;
-        } else {
-            //General case to determine the multipliers
-            degrees = -degrees;
-
-            double radians = degrees * PI / 180;
-
-            frblMultiplier = cos(radians)-sin(radians);
-            flbrMultiplier = cos(radians)+sin(radians);
-        }
-        */
 
         double radians = degrees * PI / 180;
 

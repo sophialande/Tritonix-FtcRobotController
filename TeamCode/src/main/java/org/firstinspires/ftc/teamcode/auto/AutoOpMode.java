@@ -8,9 +8,18 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+/*
+ * USAGE GUIDE:
+ *
+ * Here is the big function: all of the code in here is the code that will run on the day of the
+ * competition. Everything before the waitForStart() command will be run as initialization after the
+ * robot gets turned on but before the match starts. Everything after waitForStart() will be run
+ * during the match.
+ */
+
 //Create an opmode class
 @Config
-@Autonomous(name="noah auto test")
+@Autonomous(name="tritonics auto test")
 public class AutoOpMode extends LinearOpMode {
 
     //Create the opmode function
