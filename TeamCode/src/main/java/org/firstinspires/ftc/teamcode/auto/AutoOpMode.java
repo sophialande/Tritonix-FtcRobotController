@@ -22,8 +22,13 @@ public class AutoOpMode extends LinearOpMode {
         //wait for the game to start
         waitForStart();
 
-        double speed = 0.7;
+        double speed = 1;
+        drive(this, speed, 200, 0);
+        drive(this, speed, 200, 270);
+        drive(this, speed, 200, 180);
+        drive(this, speed, 200, 90);
         //do a little test dance.
+        /*
         drive(this, speed, 15, 0);
         drive(this, speed, 30, 180);
         drive(this, speed, 21.213, -45);
@@ -36,5 +41,7 @@ public class AutoOpMode extends LinearOpMode {
         drive(this, speed, 30, 90);
         drive(this, speed, 15, -90);
         rotate(this, speed,180);
+         */
+
     }
 }

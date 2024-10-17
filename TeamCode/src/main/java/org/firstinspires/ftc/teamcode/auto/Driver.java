@@ -19,19 +19,20 @@ public class Driver {
         double frblMultiplier;
         double flbrMultiplier;
 
+        /*
         //Determine the multipliers (some quick lookups and a general case if they lookups don't apply)
         if (degrees % 360 == 0) {
             frblMultiplier = 1;
             flbrMultiplier = 1;
         } else if (degrees % 360 == 90) {
-            frblMultiplier = 1;
-            flbrMultiplier = -1;
+            frblMultiplier = -1;
+            flbrMultiplier = 1;
         } else if (degrees % 360 == 180) {
             frblMultiplier = -1;
             flbrMultiplier = -1;
         } else if (degrees % 360 == 270) {
-            frblMultiplier = -1;
-            flbrMultiplier = 1;
+            frblMultiplier = 1;
+            flbrMultiplier = -1;
         } else {
             //General case to determine the multipliers
             degrees = -degrees;
@@ -41,6 +42,12 @@ public class Driver {
             frblMultiplier = cos(radians)-sin(radians);
             flbrMultiplier = cos(radians)+sin(radians);
         }
+        */
+
+        double radians = degrees * PI / 180;
+
+        frblMultiplier = cos(radians)-sin(radians);
+        flbrMultiplier = cos(radians)+sin(radians);
 
         //Debug (if power level caps)
         if (speed*frblMultiplier > 1 || speed*flbrMultiplier > 1) {
@@ -106,7 +113,7 @@ public class Driver {
         bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Convert from degrees to ticks
-        int ticks = (int) (degrees * 15.6);
+        int ticks = (int) (degrees*12);
 
         // set the target position
         fr.setTargetPosition(-ticks);
