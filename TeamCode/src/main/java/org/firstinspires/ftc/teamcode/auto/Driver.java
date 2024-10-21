@@ -144,4 +144,64 @@ public class Driver {
         br.setPower(0);
         bl.setPower(0);
     }
+
+    public static void traject(LinearOpMode opMode, double speed, double angle, double degrees, double rotSpeed) {
+
+        //Instantiate the multipliers that will control the speed of each wheel
+        double frblMultiplier;
+        double flbrMultiplier;
+
+        double radians = degrees * PI / 180;
+
+        frblMultiplier = cos(radians)-sin(radians);
+        flbrMultiplier = cos(radians)+sin(radians);
+
+        //Debug (if power level caps)
+        if (speed*frblMultiplier > 1 || speed*flbrMultiplier > 1) {
+            Telem.add("Drive Status", "The set speed and direction has maxed out the speed of one of the wheels. Direction and speed may not be accurate");
+        }
+
+        // Change the mode to spin until reaching the position
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        // make the motors run at the given speed
+        fr.setPower(speed * frblMultiplier);
+        fl.setPower(speed * flbrMultiplier);
+        br.setPower(speed * flbrMultiplier);
+        bl.setPower(speed * frblMultiplier);
+
+        double radianAngle = angle * PI / 180;
+        double radiansInconstant = radians;
+
+        // Run while the motors are moving
+        while (radiansInconstant <= radianAngle + radians) {
+
+            // Update the telem data
+            //opMode.telemetry.addData("Running to", "Font Right and Back Left: " + frblTicks + " | Front Left and Back Right: " + flbrTicks);
+            //opMode.telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
+            //Telem.update(opMode);
+
+            //Circle
+            frblMultiplier = cos(radiansInconstant)-sin(radiansInconstant);
+            flbrMultiplier = cos(radiansInconstant)+sin(radiansInconstant);
+            radiansInconstant += 0.000000001;
+            fr.setPower(speed * frblMultiplier);
+            fl.setPower(speed * flbrMultiplier);
+            br.setPower(speed * flbrMultiplier);
+            bl.setPower(speed * frblMultiplier);
+        }
+
+        Telem.remove("Drive Status");
+
+        // Stop the motors
+        fr.setPower(0);
+        fl.setPower(0);
+        br.setPower(0);
+        bl.setPower(0);
+
+    }
+
 }
