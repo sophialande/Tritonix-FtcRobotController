@@ -58,7 +58,7 @@ public class Driver {
         bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Calculate the number of ticks based on the distance and a conversion constant
-        int ticks = (int) (cm * 22.233);
+        int ticks = (int) (cm * 17.467);
 
         //Calculate the number of ticks required for each motor to move
         int frblTicks = (int) (ticks * frblMultiplier);
