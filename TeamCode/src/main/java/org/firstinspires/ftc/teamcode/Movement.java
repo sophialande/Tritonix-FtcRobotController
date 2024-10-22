@@ -201,17 +201,30 @@ public class Movement {
         }
     }
 
-    public static void linearSlides(int ticks, Telemetry telemetry, DcMotor motorLinearSlideLeft, DcMotor motorLinearSlideRight){
+    public static void linearSlidesH(int ticks, Telemetry telemetry, DcMotor motorLinearSlideLeftH, DcMotor motorLinearSlideRightH){
         //reset_linear_encoders(motorLinearSlideLeft, motorLinearSlideRight);
         //SET TARGET POSITION
-        motorLinearSlideLeft.setTargetPosition((int)ticks);
-        motorLinearSlideRight.setTargetPosition((int)ticks);
+        motorLinearSlideLeftH.setTargetPosition((int)ticks);
+        motorLinearSlideRightH.setTargetPosition((int)ticks);
         //RUN TO POSITION
-        motorLinearSlideLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorLinearSlideRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLinearSlideLeftH.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLinearSlideRightH.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //POWER
-        ((DcMotorEx) motorLinearSlideLeft).setPower(1);
-        ((DcMotorEx) motorLinearSlideRight).setPower(-1);
+        ((DcMotorEx) motorLinearSlideLeftH).setPower(1);
+        ((DcMotorEx) motorLinearSlideRightH).setPower(-1);
+    }
+
+    public static void linearSlidesV(int ticks, Telemetry telemetry, DcMotor motorLinearSlideLeftV, DcMotor motorLinearSlideRightV){
+        //reset_linear_encoders(motorLinearSlideLeft, motorLinearSlideRight);
+        //SET TARGET POSITION
+        motorLinearSlideLeftV.setTargetPosition((int)ticks);
+        motorLinearSlideRightV.setTargetPosition((int)ticks);
+        //RUN TO POSITION
+        motorLinearSlideLeftV.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLinearSlideRightV.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //POWER
+        ((DcMotorEx) motorLinearSlideLeftV).setPower(1);
+        ((DcMotorEx) motorLinearSlideRightV).setPower(-1);
     }
 
     public static void hang( Telemetry telemetry, DcMotor motorLinearSlideLeft, DcMotor motorLinearSlideRight){
