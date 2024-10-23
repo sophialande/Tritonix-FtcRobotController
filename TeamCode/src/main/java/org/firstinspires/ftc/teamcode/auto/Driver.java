@@ -110,7 +110,7 @@ public class Driver {
         bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Convert from degrees to ticks
-        int ticks = (int) (degrees*12);
+        int ticks = (int) (degrees*12.4);
 
         // set the target position
         fr.setTargetPosition(-ticks);
