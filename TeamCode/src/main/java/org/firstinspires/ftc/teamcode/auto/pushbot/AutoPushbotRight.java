@@ -23,8 +23,8 @@ import org.firstinspires.ftc.teamcode.Ports;
 
 //Create an opmode class
 @Config
-@Autonomous(name="noah auto pushbot left")
-public class AutoPushbotLeft extends LinearOpMode {
+@Autonomous(name="noah auto pushbot right")
+public class AutoPushbotRight extends LinearOpMode {
 
     //Create the opmode function
     @Override
@@ -35,8 +35,14 @@ public class AutoPushbotLeft extends LinearOpMode {
         //wait for the game to start
         waitForStart();
 
-        drive(this, 0.4, 80, 0);
-        drive(this, 0.4, 300, 180);
+        drive(this, 0.4, 84.853, 45);
+        drive(this, 0.4, 120, 0);
+        rotate(this, 0.4, -45);
+        drive(this, 0.4, 70, 0);
+        drive(this, 0.4, 70, 180);
+        rotate(this, 0.4, 45);
+        drive(this, 0.4, 200, 180);
+        drive(this, 0.4, 70, -135);
 
     }
 }
