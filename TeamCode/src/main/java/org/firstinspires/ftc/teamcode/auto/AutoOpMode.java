@@ -30,12 +30,7 @@ public class AutoOpMode extends LinearOpMode {
         //wait for the game to start
         waitForStart();
 
-        traject(this, 0.2, -90, 0, 0);
-
-        //drive(this, 0.6, 300, 0);
-        //drive(this, 0.6, 300, 270);
-        //drive(this, 0.6, 300, 180);
-        //drive(this, 0.6, 300, 90);
+        circularArc(this, 0.4, 90, 0, 0.1);
 
     }
 }

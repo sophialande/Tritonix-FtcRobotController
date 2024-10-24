@@ -145,7 +145,7 @@ public class Driver {
         bl.setPower(0);
     }
 
-    public static void traject(LinearOpMode opMode, double speed, double angle, double degrees, double rotSpeed) {
+    public static void circularArc(LinearOpMode opMode, double speed, double target, double degrees, double sharpness) {
 
         //Instantiate the multipliers that will control the speed of each wheel
         double frblMultiplier;
@@ -161,23 +161,11 @@ public class Driver {
             Telem.add("Drive Status", "The set speed and direction has maxed out the speed of one of the wheels. Direction and speed may not be accurate");
         }
 
-        // Change the mode to spin until reaching the position
-        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // make the motors run at the given speed
-        fr.setPower(speed * frblMultiplier);
-        fl.setPower(speed * flbrMultiplier);
-        br.setPower(speed * flbrMultiplier);
-        bl.setPower(speed * frblMultiplier);
-
-        double radianAngle = angle * PI / 180;
+        double radiansTarget = target * PI / 180;
         double radiansInconstant = radians;
 
         // Run while the motors are moving
-        while (radiansInconstant <= radianAngle + radians) {
+        while (radiansInconstant >= radiansTarget) {
 
             // Update the telem data
             //opMode.telemetry.addData("Running to", "Font Right and Back Left: " + frblTicks + " | Front Left and Back Right: " + flbrTicks);
@@ -187,11 +175,34 @@ public class Driver {
             //Circle
             frblMultiplier = cos(radiansInconstant)-sin(radiansInconstant);
             flbrMultiplier = cos(radiansInconstant)+sin(radiansInconstant);
-            radiansInconstant += 0.000000001;
+            radiansInconstant += sharpness;
             fr.setPower(speed * frblMultiplier);
             fl.setPower(speed * flbrMultiplier);
             br.setPower(speed * flbrMultiplier);
             bl.setPower(speed * frblMultiplier);
+
+            // Reset the tick encoders to zero
+            fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            // Change the mode to spin until reaching the position
+            fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            fr.setTargetPosition((int) (100 * frblMultiplier));
+            fl.setTargetPosition((int) (100 * flbrMultiplier));
+            br.setTargetPosition((int) (100 * flbrMultiplier));
+            bl.setTargetPosition((int) (100 * frblMultiplier));
+
+            while(fr.isBusy() || fl.isBusy()) {
+                // Update the telem data
+                opMode.telemetry.addData("Current Angle", radiansInconstant);
+                Telem.update(opMode);
+            }
         }
 
         Telem.remove("Drive Status");
