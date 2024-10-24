@@ -83,7 +83,7 @@ public class Driver {
         bl.setPower(speed * frblMultiplier);
 
         // Run while the motors are moving
-        while (fr.isBusy()) {
+        while (fr.isBusy() || fl.isBusy()) {
 
             // Update the telem data
             opMode.telemetry.addData("Running to", "Font Right and Back Left: " + frblTicks + " | Front Left and Back Right: " + flbrTicks);
@@ -131,7 +131,7 @@ public class Driver {
         bl.setPower(-speed);
 
         // Run while both motors are moving
-        while (fr.isBusy()) {
+        while (fr.isBusy() || fl.isBusy()) {
             // Update the telem data
             opMode.telemetry.addData("Running to", "Left " + ticks + " | Right: " + -ticks);
             opMode.telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
