@@ -145,6 +145,69 @@ public class Driver {
         bl.setPower(0);
     }
 
+    public static void drift(LinearOpMode opMode, double speed, double cm, double degrees, double rotation) {
+        //Instantiate the multipliers that will control the speed of each wheel
+        double frblMultiplier;
+        double flbrMultiplier;
+
+        double radians = degrees * PI / 180;
+
+        frblMultiplier = cos(radians)-sin(radians);
+        flbrMultiplier = cos(radians)+sin(radians);
+
+        //Debug (if power level caps)
+        if (speed*frblMultiplier > 1 || speed*flbrMultiplier > 1) {
+            Telem.add("Drive Status", "The set speed and direction has maxed out the speed of one of the wheels. Direction and speed may not be accurate");
+        }
+
+        // Reset the tick encoders to zero
+        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Calculate the number of ticks based on the distance and a conversion constant
+        int ticks = (int) ((cm * 17.467) + (rotation*12.4));
+
+        //Calculate the number of ticks required for each motor to move
+        int frblTicks = (int) (ticks * frblMultiplier);
+        int flbrTicks = (int) (ticks * flbrMultiplier);
+        //Convert from degrees to ticks
+
+        // set the target position
+        fr.setTargetPosition(frblTicks);
+        fl.setTargetPosition(flbrTicks);
+        br.setTargetPosition(flbrTicks);
+        bl.setTargetPosition(frblTicks);
+
+        // Change the mode to spin until reaching the position
+        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // make the motors run at the given speed
+        fr.setPower(speed * frblMultiplier-speed);
+        fl.setPower(speed * flbrMultiplier-speed);
+        br.setPower(speed * flbrMultiplier-speed);
+        bl.setPower(speed * frblMultiplier-speed);
+
+        // Run while both motors are moving
+        while (fr.isBusy() || fl.isBusy()) {
+            // Update the telem data
+            opMode.telemetry.addData("Running to", "Left " + ticks + " | Right: " + -ticks);
+            opMode.telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
+            Telem.update(opMode);
+        }
+
+        // Stop the motors
+        fr.setPower(0);
+        fl.setPower(0);
+        br.setPower(0);
+        bl.setPower(0);
+
+    }
+
     public static void circularArc(LinearOpMode opMode, double speed, double target, double degrees, double sharpness) {
 
         //Instantiate the multipliers that will control the speed of each wheel
