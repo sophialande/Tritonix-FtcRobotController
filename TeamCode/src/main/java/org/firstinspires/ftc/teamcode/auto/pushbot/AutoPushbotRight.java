@@ -10,15 +10,14 @@ import org.firstinspires.ftc.teamcode.Ports;
 
 /*
  *
- * Pushbot: Autonomous Left
+ * Pushbot: Autonomous Right
  *
  * Scores 5 points
- * In this OpMode the robot starts on the LEFT, scores a sample in the
- * NET ZONE, and parks in the OBSERVATION ZONE.
+ * In this OpMode the robot starts on the RIGHT, scores a sample in the
+ * NET ZONE, and parks in the OBSERVATION ZONE while avoiding a stationary
+ * alliance partner robot.
  *
- * The robot should start facing the NET ZONE with a SAMPLE touching
- * the front cross bar of the robot so it can push it straight into
- * the NET ZONE.
+ * The robot should start on the right with the forward end pointed left
  */
 
 //Create an opmode class
