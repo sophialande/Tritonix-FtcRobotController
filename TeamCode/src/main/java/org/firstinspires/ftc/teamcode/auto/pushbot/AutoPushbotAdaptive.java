@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.pushbot;
 
-import static org.firstinspires.ftc.teamcode.auto.Driver.drive;
-import static org.firstinspires.ftc.teamcode.auto.Driver.rotate;
+import static org.firstinspires.ftc.teamcode.auto.Driver.*;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -46,6 +45,9 @@ public class AutoPushbotAdaptive extends LinearOpMode {
 
     private final double speed = 0.4;
 
+    private int delay = 0;
+    private Boolean delaySet = false;
+
     // This object will store the starting position that has been entered for the robot
     private StartingPosition startingPosition;
 
@@ -66,7 +68,7 @@ public class AutoPushbotAdaptive extends LinearOpMode {
         startingPosition = null;
 
         // This loop will only end once the op mode has been configured or when it's been stopped
-        while(!isStopRequested() && !isConfigured){
+        while(!isStopRequested() && !isConfigured && !delaySet){
 
             // Set the value of prevGamepad1 to the value of from the previous loop
             prevGamepad1.copy(currentGamepad1);
@@ -94,16 +96,38 @@ public class AutoPushbotAdaptive extends LinearOpMode {
                 isConfigured = true;
             }
             telemetry.update();
+
+            if(!delaySet && isConfigured) {
+                telemetry.addLine("DELAY SETTING");
+                telemetry.addLine("-------------");
+                telemetry.addLine("");
+                telemetry.addLine("Select a Delay using the d-pad UP and DOWN buttons");
+                telemetry.addData("Current Delay (s)", delay);
+
+                if(currentGamepad1.dpad_up && !prevGamepad1.dpad_up) {
+                    delay++;
+                } else if (currentGamepad1.dpad_down && !prevGamepad1.dpad_down) {
+                    delay--;
+                }
+
+                if(currentGamepad1.a && !prevGamepad1.a){
+                    delaySet = true;
+                }
+            }
+            telemetry.update();
         }
 
         // inform the driver that the setup is complete
         telemetry.addLine("CONFIGURATION COMPLETE");
         telemetry.addLine("----------------------");
         telemetry.addData("Starting Position", startingPosition);
+        telemetry.addData("Delay", delay);
         telemetry.update();
 
         //wait for the game to start
         waitForStart();
+
+        this.sleep((long)1000*delay);
 
         if(startingPosition == StartingPosition.LEFT){
             drive(this, speed, 80, 0);
