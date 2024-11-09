@@ -32,7 +32,6 @@ import static org.firstinspires.ftc.teamcode.hardware.Ports.*;
  */
 
 public class Driver {
-
     //drive function, input speed, distance in cm, and degree angle of the movement
     public static void drive(LinearOpMode opMode, double speed, double cm, double degrees) {
 
@@ -275,6 +274,54 @@ public class Driver {
         br.setPower(0);
         bl.setPower(0);
 
+    }
+
+    public static void claw(double position) {
+        claw.setPosition(position);
+    }
+
+    public static void linearSlidesHUp(double power, double maxExtension) {
+        if (lsh_r.getCurrentPosition()<maxExtension && lsh_l.getCurrentPosition()<maxExtension){
+            lsh_r.setPower(power);
+            lsh_l.setPower(power);
+        }
+        else {
+            lsh_r.setPower(0);
+            lsh_l.setPower(0);
+        }
+    }
+
+    public static void linearSlidesHDown(double power, double maxExtension) {
+        if (lsh_r.getCurrentPosition()>maxExtension && lsh_l.getCurrentPosition()>maxExtension){
+            lsh_r.setPower(power);
+            lsh_l.setPower(power);
+        }
+        else {
+            lsh_r.setPower(0);
+            lsh_l.setPower(0);
+        }
+    }
+
+    public static void linearSlidesVUp(double power, double maxExtension) {
+        if (lsv_r.getCurrentPosition()<maxExtension && lsv_l.getCurrentPosition()<maxExtension){
+            lsv_r.setPower(power);
+            lsv_l.setPower(power);
+        }
+        else {
+            lsv_r.setPower(0);
+            lsv_l.setPower(0);
+        }
+    }
+
+    public static void linearSlidesVDown(double power, double maxExtension) {
+        if (lsv_r.getCurrentPosition()>maxExtension && lsv_l.getCurrentPosition()>maxExtension){
+            lsv_r.setPower(power);
+            lsv_l.setPower(power);
+        }
+        else {
+            lsv_r.setPower(0);
+            lsv_l.setPower(0);
+        }
     }
 
 }

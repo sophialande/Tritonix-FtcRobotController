@@ -146,8 +146,6 @@ public class Movement {
         telemetry.addData("front left pos", motorFrontLeft.getCurrentPosition());
         telemetry.addData("front right pos", motorFrontRight.getCurrentPosition());
         telemetry.update();
-
-
     }
 
     //rotation right

@@ -23,6 +23,18 @@ public class Ports {
     public static DcMotor br;
     public static DcMotor bl;
 
+    // Linear slides
+    public static DcMotor lsv_r;
+    public static DcMotor lsv_l;
+    public static DcMotor lsh_r;
+    public static DcMotor lsh_l;
+
+    // Servos
+    public static Servo claw;
+    public static Servo intake;
+    public static Servo outtake;
+
+
     //DO INITIALIZATION STEPS HERE
     public static void init(LinearOpMode opMode){
 
@@ -37,5 +49,15 @@ public class Ports {
         fl.setDirection(DcMotor.Direction.REVERSE);
         br.setDirection(DcMotor.Direction.FORWARD);
         bl.setDirection(DcMotor.Direction.REVERSE);
+
+        lsv_r = opMode.hardwareMap.get(DcMotor.class, "lsv_r");
+        lsv_l = opMode.hardwareMap.get(DcMotor.class, "lsv_l");
+
+        lsh_r = opMode.hardwareMap.get(DcMotor.class, "lsh_r");
+        lsh_l = opMode.hardwareMap.get(DcMotor.class, "lsh_l");
+
+        claw = opMode.hardwareMap.get(Servo.class, "claw");
+        intake = opMode.hardwareMap.get(Servo.class, "intake");
+        outtake = opMode.hardwareMap.get(Servo.class, "outtake");
     }
 }

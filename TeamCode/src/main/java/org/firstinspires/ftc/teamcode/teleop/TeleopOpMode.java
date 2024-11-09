@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Ports.*;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.hardware.Driver;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
 
 
@@ -51,6 +52,61 @@ public class TeleopOpMode extends LinearOpMode {
             bl.setPower(leftBackPower);
             br.setPower(rightBackPower);
         }
+
+        // VERTICAL LINEAR SLIDES (UP AND DOWN)
+        if (gamepad1.y) {
+            Driver.linearSlidesVUp(1, 3200);
+        }
+        else {
+            Driver.linearSlidesVUp(0, 3200);
+        }
+
+        if (gamepad1.a) {
+            Driver.linearSlidesVDown(-1, -1300);
+        }
+        else {
+            Driver.linearSlidesVDown(0, -1300);
+        }
+
+        // HORIZONTAL LINEAR SLIDES (IN AND OUT)
+        if (gamepad1.x) {
+            Driver.linearSlidesHUp(1, 3200);
+        }
+        else {
+            Driver.linearSlidesHUp(0, 3200);
+        }
+
+        if (gamepad1.b) {
+            Driver.linearSlidesHDown(-1, -1300);
+        }
+        else {
+            Driver.linearSlidesHDown(0, -1300);
+        }
+
+        // CLAW
+        if (gamepad1.dpad_right) {
+            Driver.claw(1);
+        }
+        if (gamepad1.dpad_left) {
+            Driver.claw(-1);
+        }
+
+        // INTAKE/OUTTAKE (DO LATER BECAUSE THEY HAVEN'T DECIDED YET
+
+        // HANGING MECHANISM (DO LATER BECAUSE THEY HAVEN'T DECIDED YET
+
+        //TELEMETRY
+        telemetry.addData("Front Left Pow", fl.getPower());
+        telemetry.addData("Back Left Pow", bl.getPower());
+        telemetry.addData("Front Right Pow", fr.getPower());
+        telemetry.addData("Back Right Pow", br.getPower());
+        telemetry.addData("Linear Slide Vertical Right Position", lsv_r.getCurrentPosition());
+        telemetry.addData("Linear Slide Vertical Left Position", lsv_l.getCurrentPosition());
+        telemetry.addData("Linear Slide Horizontal Right Position", lsh_r.getCurrentPosition());
+        telemetry.addData("Linear Slide Horizontal Left Position", lsh_l.getCurrentPosition());
+        //telemetry.addData("Claw position", claw.getCurrentPosition());
+        telemetry.update();
+
     }
 }
 
