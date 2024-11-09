@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import static org.firstinspires.ftc.teamcode.auto.Driver.*;
-import org.firstinspires.ftc.teamcode.Ports;
+import static org.firstinspires.ftc.teamcode.hardware.Driver.*;
+import org.firstinspires.ftc.teamcode.hardware.Ports;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;

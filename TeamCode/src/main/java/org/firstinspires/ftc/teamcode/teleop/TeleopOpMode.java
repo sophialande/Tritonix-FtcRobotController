@@ -1,12 +1,11 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import static org.firstinspires.ftc.teamcode.Ports.*;
+import static org.firstinspires.ftc.teamcode.hardware.Ports.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Ports;
-import org.firstinspires.ftc.teamcode.Telem;
+import org.firstinspires.ftc.teamcode.hardware.Ports;
 
 
 @TeleOp(name = "Teleop Tritonics")

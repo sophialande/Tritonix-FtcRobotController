@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode.hardware;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
@@ -7,8 +7,7 @@ import static java.lang.Math.sin;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Telem;
-import static org.firstinspires.ftc.teamcode.Ports.*;
+import static org.firstinspires.ftc.teamcode.hardware.Ports.*;
 
 /*
  * USAGE GUIDE:
