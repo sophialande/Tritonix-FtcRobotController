@@ -33,10 +33,10 @@ public class Ports {
         bl = opMode.hardwareMap.get(DcMotor.class, "BL");
 
         //Set the motors to run using the encoder
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Set the motors to run in the right direction
         fr.setDirection(DcMotor.Direction.FORWARD);
