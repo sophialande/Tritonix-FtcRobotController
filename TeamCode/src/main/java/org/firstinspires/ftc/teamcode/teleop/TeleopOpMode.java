@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.hardware.Driver;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
+import org.firstinspires.ftc.teamcode.hardware.Telem;
 
 
 @TeleOp(name = "Teleop Tritonics")
@@ -100,7 +101,7 @@ public class TeleopOpMode extends LinearOpMode {
             telemetry.addData("Linear Slide Horizontal Right Position", Ports.lsh_r.getCurrentPosition());
             telemetry.addData("Linear Slide Horizontal Left Position", Ports.lsh_l.getCurrentPosition());
             //telemetry.addData("Claw position", Ports.claw.getCurrentPosition());
-            telemetry.update();
+            Telem.update(this);
         }
     }
 }
