@@ -152,6 +152,5 @@ public class AutoPushbotAdaptive extends LinearOpMode {
             drive(this, speed, 200, 180);
             drive(this, speed, 70, -135);
         }
-
     }
 }

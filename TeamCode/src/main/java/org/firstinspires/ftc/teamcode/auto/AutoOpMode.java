@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 //Create an opmode class
 @Config
-@Autonomous(name="tritonics auto test")
+@Autonomous(name="Tritonics Auto")
 public class AutoOpMode extends LinearOpMode {
 
     //Create the opmode function
