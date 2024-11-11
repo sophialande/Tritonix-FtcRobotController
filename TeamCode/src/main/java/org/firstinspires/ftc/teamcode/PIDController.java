@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auto;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.util.*;
 
@@ -28,11 +28,9 @@ public class PIDController {
     }
 
     double Evaluate(int position){
-
         integralSum += position*elapsedTime.time();
         double output = position*Kp + integralSum*Ki + (position-lastPosition)*Kd/elapsedTime.time() + Kf;
         elapsedTime.reset();
         return(output);
-
     }
 }
