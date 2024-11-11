@@ -2,6 +2,13 @@ package org.firstinspires.ftc.teamcode.auto;
 
 import com.qualcomm.robotcore.util.*;
 
+/*
+ * USAGE GUIDE:
+ *
+ * Call setup with the current position and then in a loop call evaluate until you reach your
+ * desired outcome.
+ */
+
 public class PIDController {
 
     //Define the parameters of the PID controller
