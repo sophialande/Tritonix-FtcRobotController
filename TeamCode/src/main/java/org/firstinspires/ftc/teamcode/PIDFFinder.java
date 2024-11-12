@@ -22,16 +22,12 @@ public class PIDFFinder extends LinearOpMode {
     int prevHR;
     int prevHL;
 
-    @Override
-    public void runOpMode(){
-        telemetry.addLine("Initializing ports...");
-        Telem.update(this);
+    double VRF = 0;
+    double VLF = 0;
+    double HRF = 0;
+    double HLF = 0;
 
-        Ports.init(this);
-
-        telemetry.addLine("Resetting linear slides");
-        Telem.update(this);
-
+    void resetSlides(){
         lsv_r.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lsv_l.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lsh_r.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -82,6 +78,19 @@ public class PIDFFinder extends LinearOpMode {
         lsv_l.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lsh_r.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lsh_l.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    @Override
+    public void runOpMode(){
+        telemetry.addLine("Initializing ports...");
+        Telem.update(this);
+
+        Ports.init(this);
+
+        telemetry.addLine("Resetting linear slides");
+        Telem.update(this);
+
+        resetSlides();
 
         telemetry.addLine("Setup Complete");
         telemetry.addLine("--------------");
@@ -90,7 +99,9 @@ public class PIDFFinder extends LinearOpMode {
 
         waitForStart();
 
-        for(int i = 0; i > 1/accuracy; i++){
+        boolean calibrationNotFinished = false;
+
+        for(int i = 0; calibrationNotFinished; i++){
 
             lsv_r.setPower(i*accuracy);
             lsv_l.setPower(i*accuracy);
@@ -103,6 +114,38 @@ public class PIDFFinder extends LinearOpMode {
             prevHL = lsh_l.getCurrentPosition();
 
             sleep(50);
+
+            lsv_r.setPower(0);
+            lsv_l.setPower(0);
+            lsh_r.setPower(0);
+            lsh_l.setPower(0);
+
+            calibrationNotFinished = (lsv_r.getCurrentPosition()-prevVR == 0) &&
+                                     (lsv_l.getCurrentPosition()-prevVL == 0) &&
+                                     (lsh_r.getCurrentPosition()-prevHR == 0) &&
+                                     (lsh_l.getCurrentPosition()-prevHL == 0);
+
+            if(lsv_r.getCurrentPosition()-prevVR != 0 && VRF == 0){
+                VRF = i*accuracy;
+            }
+            if(lsv_l.getCurrentPosition()-prevVL != 0 && VLF == 0){
+                VLF = i*accuracy;
+            }
+            if(lsh_r.getCurrentPosition()-prevHR != 0 && HRF == 0){
+                HRF = i*accuracy;
+            }
+            if(lsh_l.getCurrentPosition()-prevHL != 0 && HLF == 0){
+                HLF = i*accuracy;
+            }
+
+            telemetry.addData("VRF", VRF);
+            telemetry.addData("VLF", VLF);
+            telemetry.addData("HRF", HRF);
+            telemetry.addData("HLF", HLF);
+            telemetry.addLine("It it says 0, it's undefined");
+            Telem.update(this);
+
+            resetSlides();
 
         }
 
