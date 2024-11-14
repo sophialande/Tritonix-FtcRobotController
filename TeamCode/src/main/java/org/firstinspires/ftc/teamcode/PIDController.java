@@ -12,24 +12,31 @@ import com.qualcomm.robotcore.util.*;
 public class PIDController {
 
     //Define the parameters of the PID controller
-    double Kp = 0;
-    double Ki = 0;
-    double Kd = 0;
-    double Kf = 0;
+    double Kp;
+    double Ki;
+    double Kd;
+    double Kf;
+
+    public PIDController(double Kp, double Ki, double Kd, double Kf){
+        this.Kp = Kp;
+        this.Ki = Ki;
+        this.Kd = Kd;
+        this.Kf = Kf;
+    }
 
     ElapsedTime elapsedTime = new ElapsedTime();
     double integralSum = 0;
 
-    int lastPosition;
+    int lastError;
 
-    void Setup(int position){
-        lastPosition = position;
+    void setup(int error){
+        lastError = error;
         elapsedTime.reset();
     }
 
-    double Evaluate(int position){
-        integralSum += position*elapsedTime.time();
-        double output = position*Kp + integralSum*Ki + (position-lastPosition)*Kd/elapsedTime.time() + Kf;
+    double evaluate(int error){
+        integralSum += error * elapsedTime.time();
+        double output = error * Kp + integralSum*Ki + (error - lastError)*Kd/elapsedTime.time() + Kf;
         elapsedTime.reset();
         return(output);
     }
