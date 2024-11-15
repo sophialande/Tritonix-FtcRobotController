@@ -33,7 +33,7 @@ import static org.firstinspires.ftc.teamcode.hardware.Ports.*;
 
 public class Driver {
     //drive function, input speed, distance in cm, and degree angle of the movement
-    public static void drive(LinearOpMode opMode, double speed, double cm, double degrees) {
+    public static void drive(LinearOpMode opMode, Ports ports, double speed, double cm, double degrees) {
 
         //Instantiate the multipliers that will control the speed of each wheel
         double frblMultiplier;
@@ -50,10 +50,10 @@ public class Driver {
         }
 
         // Reset the tick encoders to zero
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Calculate the number of ticks based on the distance and a conversion constant
         int ticks = (int) (cm * 17.467);
@@ -63,87 +63,87 @@ public class Driver {
         int flbrTicks = (int) (ticks * flbrMultiplier);
 
         // set the target position
-        fr.setTargetPosition(frblTicks);
-        fl.setTargetPosition(flbrTicks);
-        br.setTargetPosition(flbrTicks);
-        bl.setTargetPosition(frblTicks);
+        ports.fr.setTargetPosition(frblTicks);
+        ports.fl.setTargetPosition(flbrTicks);
+        ports.br.setTargetPosition(flbrTicks);
+        ports.bl.setTargetPosition(frblTicks);
 
         // Change the mode to spin until reaching the position
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // make the motors run at the given speed
-        fr.setPower(speed * frblMultiplier);
-        fl.setPower(speed * flbrMultiplier);
-        br.setPower(speed * flbrMultiplier);
-        bl.setPower(speed * frblMultiplier);
+        ports.fr.setPower(speed * frblMultiplier);
+        ports.fl.setPower(speed * flbrMultiplier);
+        ports.br.setPower(speed * flbrMultiplier);
+        ports.bl.setPower(speed * frblMultiplier);
 
         // Run while the motors are moving
-        while (fr.isBusy() || fl.isBusy()) {
+        while (ports.fr.isBusy() || ports.fl.isBusy()) {
 
             // Update the telem data
             opMode.telemetry.addData("Running to", "Font Right and Back Left: " + frblTicks + " | Front Left and Back Right: " + flbrTicks);
-            opMode.telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
+            opMode.telemetry.addData("Current pos", "Front Right: " + ports.fr.getCurrentPosition() + " | Front Left: " + ports.fl.getCurrentPosition() + " | Back Right: " + ports.br.getCurrentPosition() + " | Back Left: " + ports.bl.getCurrentPosition());
             Telem.update(opMode);
         }
 
         Telem.remove("Drive Status");
 
         // Stop the motors
-        fr.setPower(0);
-        fl.setPower(0);
-        br.setPower(0);
-        bl.setPower(0);
+        ports.fr.setPower(0);
+        ports.fl.setPower(0);
+        ports.br.setPower(0);
+        ports.bl.setPower(0);
 
     }
 
-    public static void rotate(LinearOpMode opMode, double speed, double degrees){
+    public static void rotate(LinearOpMode opMode, Ports ports, double speed, double degrees){
 
         // Reset the tick encoders to zero
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Convert from degrees to ticks
         int ticks = (int) (degrees*12.4);
 
         // set the target position
-        fr.setTargetPosition(-ticks);
-        fl.setTargetPosition(ticks);
-        br.setTargetPosition(-ticks);
-        bl.setTargetPosition(ticks);
+        ports.fr.setTargetPosition(-ticks);
+        ports.fl.setTargetPosition(ticks);
+        ports.br.setTargetPosition(-ticks);
+        ports.bl.setTargetPosition(ticks);
 
         // Change the mode to spin until reaching the position
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // make the motors run at the given speed
-        fr.setPower(-speed);
-        fl.setPower(-speed);
-        br.setPower(-speed);
-        bl.setPower(-speed);
+        ports.fr.setPower(-speed);
+        ports.fl.setPower(-speed);
+        ports.br.setPower(-speed);
+        ports.bl.setPower(-speed);
 
         // Run while both motors are moving
-        while (fr.isBusy() || fl.isBusy()) {
+        while (ports.fr.isBusy() || ports.fl.isBusy()) {
             // Update the telem data
             opMode.telemetry.addData("Running to", "Left " + ticks + " | Right: " + -ticks);
-            opMode.telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
+            opMode.telemetry.addData("Current pos", "Front Right: " + ports.fr.getCurrentPosition() + " | Front Left: " + ports.fl.getCurrentPosition() + " | Back Right: " + ports.br.getCurrentPosition() + " | Back Left: " + ports.bl.getCurrentPosition());
             Telem.update(opMode);
         }
 
         // Stop the motors
-        fr.setPower(0);
-        fl.setPower(0);
-        br.setPower(0);
-        bl.setPower(0);
+        ports.fr.setPower(0);
+        ports.fl.setPower(0);
+        ports.br.setPower(0);
+        ports.bl.setPower(0);
     }
 
-    public static void drift(LinearOpMode opMode, double speed, double cm, double degrees, double rotation) {
+    public static void drift(LinearOpMode opMode, Ports ports, double speed, double cm, double degrees, double rotation) {
         //Instantiate the multipliers that will control the speed of each wheel
         double frblMultiplier;
         double flbrMultiplier;
@@ -159,10 +159,10 @@ public class Driver {
         }
 
         // Reset the tick encoders to zero
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ports.bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Calculate the number of ticks based on the distance and a conversion constant
         int ticks = (int) ((cm * 17.467) + (rotation*12.4));
@@ -173,40 +173,40 @@ public class Driver {
         //Convert from degrees to ticks
 
         // set the target position
-        fr.setTargetPosition(frblTicks);
-        fl.setTargetPosition(flbrTicks);
-        br.setTargetPosition(flbrTicks);
-        bl.setTargetPosition(frblTicks);
+        ports.fr.setTargetPosition(frblTicks);
+        ports.fl.setTargetPosition(flbrTicks);
+        ports.br.setTargetPosition(flbrTicks);
+        ports.bl.setTargetPosition(frblTicks);
 
         // Change the mode to spin until reaching the position
-        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // make the motors run at the given speed
-        fr.setPower(speed * frblMultiplier-speed);
-        fl.setPower(speed * flbrMultiplier-speed);
-        br.setPower(speed * flbrMultiplier-speed);
-        bl.setPower(speed * frblMultiplier-speed);
+        ports.fr.setPower(speed * frblMultiplier-speed);
+        ports.fl.setPower(speed * flbrMultiplier-speed);
+        ports.br.setPower(speed * flbrMultiplier-speed);
+        ports.bl.setPower(speed * frblMultiplier-speed);
 
         // Run while both motors are moving
-        while (fr.isBusy() || fl.isBusy()) {
+        while (ports.fr.isBusy() || ports.fl.isBusy()) {
             // Update the telem data
             opMode.telemetry.addData("Running to", "Left " + ticks + " | Right: " + -ticks);
-            opMode.telemetry.addData("Current pos", "Front Right: " + fr.getCurrentPosition() + " | Front Left: " + fl.getCurrentPosition() + " | Back Right: " + br.getCurrentPosition() + " | Back Left: " + bl.getCurrentPosition());
+            opMode.telemetry.addData("Current pos", "Front Right: " + ports.fr.getCurrentPosition() + " | Front Left: " + ports.fl.getCurrentPosition() + " | Back Right: " + ports.br.getCurrentPosition() + " | Back Left: " + ports.bl.getCurrentPosition());
             Telem.update(opMode);
         }
 
         // Stop the motors
-        fr.setPower(0);
-        fl.setPower(0);
-        br.setPower(0);
-        bl.setPower(0);
+        ports.fr.setPower(0);
+        ports.fl.setPower(0);
+        ports.br.setPower(0);
+        ports.bl.setPower(0);
 
     }
 
-    public static void circularArc(LinearOpMode opMode, double speed, double target, double degrees, double sharpness) {
+    public static void circularArc(LinearOpMode opMode, Ports ports, double speed, double target, double degrees, double sharpness) {
 
         //Instantiate the multipliers that will control the speed of each wheel
         double frblMultiplier;
@@ -237,29 +237,29 @@ public class Driver {
             frblMultiplier = cos(radiansInconstant)-sin(radiansInconstant);
             flbrMultiplier = cos(radiansInconstant)+sin(radiansInconstant);
             radiansInconstant += sharpness;
-            fr.setPower(speed * frblMultiplier);
-            fl.setPower(speed * flbrMultiplier);
-            br.setPower(speed * flbrMultiplier);
-            bl.setPower(speed * frblMultiplier);
+            ports.fr.setPower(speed * frblMultiplier);
+            ports.fl.setPower(speed * flbrMultiplier);
+            ports.br.setPower(speed * flbrMultiplier);
+            ports.bl.setPower(speed * frblMultiplier);
 
             // Reset the tick encoders to zero
-            fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            ports.fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            ports.fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            ports.br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            ports.bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             // Change the mode to spin until reaching the position
-            fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ports.fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ports.fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ports.br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ports.bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            fr.setTargetPosition((int) (100 * frblMultiplier));
-            fl.setTargetPosition((int) (100 * flbrMultiplier));
-            br.setTargetPosition((int) (100 * flbrMultiplier));
-            bl.setTargetPosition((int) (100 * frblMultiplier));
+            ports.fr.setTargetPosition((int) (100 * frblMultiplier));
+            ports.fl.setTargetPosition((int) (100 * flbrMultiplier));
+            ports.br.setTargetPosition((int) (100 * flbrMultiplier));
+            ports.bl.setTargetPosition((int) (100 * frblMultiplier));
 
-            while(fr.isBusy() || fl.isBusy()) {
+            while(ports.fr.isBusy() || ports.fl.isBusy()) {
                 // Update the telem data
                 opMode.telemetry.addData("Current Angle", radiansInconstant);
                 Telem.update(opMode);
@@ -269,58 +269,58 @@ public class Driver {
         Telem.remove("Drive Status");
 
         // Stop the motors
-        fr.setPower(0);
-        fl.setPower(0);
-        br.setPower(0);
-        bl.setPower(0);
+        ports.fr.setPower(0);
+        ports.fl.setPower(0);
+        ports.br.setPower(0);
+        ports.bl.setPower(0);
 
     }
 
-    public static void claw(double position) {
-        claw.setPosition(position);
+    public static void claw(Ports ports, double position) {
+        ports.claw.setPosition(position);
     }
 
-    public static void linearSlidesHUp(double power, double maxExtension) {
-        if (lsh_r.getCurrentPosition()<maxExtension && lsh_l.getCurrentPosition()<maxExtension){
-            lsh_r.setPower(power);
-            lsh_l.setPower(power);
+    public static void linearSlidesHUp(Ports ports, double power, double maxExtension) {
+        if (ports.lsh_r.getCurrentPosition()<maxExtension && ports.lsh_l.getCurrentPosition()<maxExtension){
+            ports.lsh_r.setPower(power);
+            ports.lsh_l.setPower(power);
         }
         else {
-            lsh_r.setPower(0);
-            lsh_l.setPower(0);
+            ports.lsh_r.setPower(0);
+            ports.lsh_l.setPower(0);
         }
     }
 
-    public static void linearSlidesHDown(double power, double maxExtension) {
-        if (lsh_r.getCurrentPosition()>maxExtension && lsh_l.getCurrentPosition()>maxExtension){
-            lsh_r.setPower(power);
-            lsh_l.setPower(power);
+    public static void linearSlidesHDown(Ports ports, double power, double maxExtension) {
+        if (ports.lsh_r.getCurrentPosition()>maxExtension && ports.lsh_l.getCurrentPosition()>maxExtension){
+            ports.lsh_r.setPower(power);
+            ports.lsh_l.setPower(power);
         }
         else {
-            lsh_r.setPower(0);
-            lsh_l.setPower(0);
+            ports.lsh_r.setPower(0);
+            ports.lsh_l.setPower(0);
         }
     }
 
-    public static void linearSlidesVUp(double power, double maxExtension) {
-        if (lsv_r.getCurrentPosition()<maxExtension && lsv_l.getCurrentPosition()<maxExtension){
-            lsv_r.setPower(power);
-            lsv_l.setPower(power);
+    public static void linearSlidesVUp(Ports ports, double power, double maxExtension) {
+        if (ports.lsv_r.getCurrentPosition()<maxExtension && ports.lsv_l.getCurrentPosition()<maxExtension){
+            ports.lsv_r.setPower(power);
+            ports.lsv_l.setPower(power);
         }
         else {
-            lsv_r.setPower(0);
-            lsv_l.setPower(0);
+            ports.lsv_r.setPower(0);
+            ports.lsv_l.setPower(0);
         }
     }
 
-    public static void linearSlidesVDown(double power, double maxExtension) {
-        if (lsv_r.getCurrentPosition()>maxExtension && lsv_l.getCurrentPosition()>maxExtension){
-            lsv_r.setPower(power);
-            lsv_l.setPower(power);
+    public static void linearSlidesVDown(Ports ports, double power, double maxExtension) {
+        if (ports.lsv_r.getCurrentPosition()>maxExtension && ports.lsv_l.getCurrentPosition()>maxExtension){
+            ports.lsv_r.setPower(power);
+            ports.lsv_l.setPower(power);
         }
         else {
-            lsv_r.setPower(0);
-            lsv_l.setPower(0);
+            ports.lsv_r.setPower(0);
+            ports.lsv_l.setPower(0);
         }
     }
 }

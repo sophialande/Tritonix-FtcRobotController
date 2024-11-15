@@ -24,21 +24,25 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @Autonomous(name="Tritonics Auto")
 public class AutoOpMode extends LinearOpMode {
 
+    Ports ports;
+    Ports.Builder builder;
+
     //Create the opmode function
     @Override
     public void runOpMode(){
         //initialize
-        Ports.init(this);
+        builder.wheelsActive = true;
+        ports = new Ports(this, builder);
 
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //wait for the game to start
         waitForStart();
 
-        drift(this, 0.4, 100, 0, 100);
+        drift(this, ports, 0.4, 100, 0, 100);
 
     }
 }

@@ -11,10 +11,14 @@ import org.firstinspires.ftc.teamcode.hardware.Telem;
 @TeleOp(name = "Teleop Tritonics")
 public class TeleopOpMode extends LinearOpMode {
 
+    Ports ports;
+    Ports.Builder builder;
+
     @Override
     public void runOpMode() {
 
-        Ports.init(this);
+        builder.allActive = true;
+        ports = new Ports(this, builder);
 
         waitForStart();
 
@@ -46,44 +50,44 @@ public class TeleopOpMode extends LinearOpMode {
                 br /= max;
             }
 
-            Ports.fl.setPower(fl);
-            Ports.fr.setPower(fr);
-            Ports.bl.setPower(bl);
-            Ports.br.setPower(br);
+            ports.fl.setPower(fl);
+            ports.fr.setPower(fr);
+            ports.bl.setPower(bl);
+            ports.br.setPower(br);
 
 
             // VERTICAL LINEAR SLIDES (UP AND DOWN)
             if (gamepad1.y) {
-                Driver.linearSlidesVUp(1, 3200);
+                Driver.linearSlidesVUp(ports, 1, 3200);
             } else {
-                Driver.linearSlidesVUp(0, 3200);
+                Driver.linearSlidesVUp(ports, 0, 3200);
             }
 
             if (gamepad1.a) {
-                Driver.linearSlidesVDown(-1, -1300);
+                Driver.linearSlidesVDown(ports, -1, -1300);
             } else {
-                Driver.linearSlidesVDown(0, -1300);
+                Driver.linearSlidesVDown(ports, 0, -1300);
             }
 
             // HORIZONTAL LINEAR SLIDES (IN AND OUT)
             if (gamepad1.x) {
-                Driver.linearSlidesHUp(1, 3200);
+                Driver.linearSlidesHUp(ports, 1, 3200);
             } else {
-                Driver.linearSlidesHUp(0, 3200);
+                Driver.linearSlidesHUp(ports, 0, 3200);
             }
 
             if (gamepad1.b) {
-                Driver.linearSlidesHDown(-1, -1300);
+                Driver.linearSlidesHDown(ports, -1, -1300);
             } else {
-                Driver.linearSlidesHDown(0, -1300);
+                Driver.linearSlidesHDown(ports, 0, -1300);
             }
 
             // CLAW
             if (gamepad1.dpad_right) {
-                Driver.claw(1);
+                Driver.claw(ports, 1);
             }
             if (gamepad1.dpad_left) {
-                Driver.claw(-1);
+                Driver.claw(ports, -1);
             }
             //change
 
@@ -92,14 +96,14 @@ public class TeleopOpMode extends LinearOpMode {
             // HANGING MECHANISM (DO LATER BECAUSE THEY HAVEN'T DECIDED YET
 
             //TELEMETRY
-            telemetry.addData("Front Left Pow", Ports.fl.getPower());
-            telemetry.addData("Back Left Pow", Ports.bl.getPower());
-            telemetry.addData("Front Right Pow", Ports.fr.getPower());
-            telemetry.addData("Back Right Pow", Ports.br.getPower());
-            telemetry.addData("Linear Slide Vertical Right Position", Ports.lsv_r.getCurrentPosition());
-            telemetry.addData("Linear Slide Vertical Left Position", Ports.lsv_l.getCurrentPosition());
-            telemetry.addData("Linear Slide Horizontal Right Position", Ports.lsh_r.getCurrentPosition());
-            telemetry.addData("Linear Slide Horizontal Left Position", Ports.lsh_l.getCurrentPosition());
+            telemetry.addData("Front Left Pow", ports.fl.getPower());
+            telemetry.addData("Back Left Pow", ports.bl.getPower());
+            telemetry.addData("Front Right Pow", ports.fr.getPower());
+            telemetry.addData("Back Right Pow", ports.br.getPower());
+            telemetry.addData("Linear Slide Vertical Right Position", ports.lsv_r.getCurrentPosition());
+            telemetry.addData("Linear Slide Vertical Left Position", ports.lsv_l.getCurrentPosition());
+            telemetry.addData("Linear Slide Horizontal Right Position", ports.lsh_r.getCurrentPosition());
+            telemetry.addData("Linear Slide Horizontal Left Position", ports.lsh_l.getCurrentPosition());
             //telemetry.addData("Claw position", Ports.claw.getCurrentPosition());
             Telem.update(this);
         }

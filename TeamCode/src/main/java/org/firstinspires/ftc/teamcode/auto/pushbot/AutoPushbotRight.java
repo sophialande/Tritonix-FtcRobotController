@@ -30,28 +30,32 @@ import org.firstinspires.ftc.teamcode.hardware.Ports;
 @Autonomous(name="noah auto pushbot right")
 public class AutoPushbotRight extends LinearOpMode {
 
+    Ports ports;
+    Ports.Builder builder;
+
     //Create the opmode function
     @Override
     public void runOpMode(){
         //initialize
-        Ports.init(this);
+        builder.wheelsActive = true;
+        ports = new Ports(this, builder);
 
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //wait for the game to start
         waitForStart();
 
-        drive(this, 0.4, 84.853, 45);
-        drive(this, 0.4, 120, 0);
-        rotate(this, 0.4, -45);
-        drive(this, 0.4, 70, 0);
-        drive(this, 0.4, 70, 180);
-        rotate(this, 0.4, 45);
-        drive(this, 0.4, 200, 180);
-        drive(this, 0.4, 70, -135);
+        drive(this, ports, 0.4, 84.853, 45);
+        drive(this, ports, 0.4, 120, 0);
+        rotate(this, ports, 0.4, -45);
+        drive(this, ports, 0.4, 70, 0);
+        drive(this, ports, 0.4, 70, 180);
+        rotate(this, ports, 0.4, 45);
+        drive(this, ports, 0.4, 200, 180);
+        drive(this, ports, 0.4, 70, -135);
 
     }
 }

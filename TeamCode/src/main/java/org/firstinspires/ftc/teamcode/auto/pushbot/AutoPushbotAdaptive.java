@@ -56,16 +56,20 @@ public class AutoPushbotAdaptive extends LinearOpMode {
     // This object will store the starting position that has been entered for the robot
     private StartingPosition startingPosition;
 
+    Ports ports;
+    Ports.Builder builder;
+
     //Create the opmode function
     @Override
     public void runOpMode(){
         //initialize
-        Ports.init(this);
+        builder.wheelsActive = true;
+        ports = new Ports(this, builder);
 
-        fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Initialize the gampepad objects
         prevGamepad1 = new Gamepad();
@@ -140,17 +144,17 @@ public class AutoPushbotAdaptive extends LinearOpMode {
         this.sleep((long)1000*delay);
 
         if(startingPosition == StartingPosition.LEFT){
-            drive(this, speed, 80, 0);
-            drive(this, speed, 300, 180);
+            drive(this, ports, speed, 80, 0);
+            drive(this, ports, speed, 300, 180);
         } else if (startingPosition == StartingPosition.RIGHT) {
-            drive(this, speed, 84.853, 45);
-            drive(this, speed, 120, 0);
-            rotate(this, speed, -45);
-            drive(this, speed, 70, 0);
-            drive(this, speed, 70, 180);
-            rotate(this, speed, 45);
-            drive(this, speed, 200, 180);
-            drive(this, speed, 70, -135);
+            drive(this, ports, speed, 84.853, 45);
+            drive(this, ports, speed, 120, 0);
+            rotate(this, ports, speed, -45);
+            drive(this, ports, speed, 70, 0);
+            drive(this, ports, speed, 70, 180);
+            rotate(this, ports, speed, 45);
+            drive(this, ports, speed, 200, 180);
+            drive(this, ports, speed, 70, -135);
         }
     }
 }

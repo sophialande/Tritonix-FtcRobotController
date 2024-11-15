@@ -18,25 +18,25 @@ public class Ports {
     //CREATE HARDWARE VARIABLES HERE
 
     //Motors
-    DcMotor fr;
-    DcMotor fl;
-    DcMotor br;
-    DcMotor bl;
+    public DcMotor fr;
+    public DcMotor fl;
+    public DcMotor br;
+    public DcMotor bl;
 
     // Linear slides
-    DcMotor lsv_r;
-    DcMotor lsv_l;
-    DcMotor lsh_r;
-    DcMotor lsh_l;
+    public DcMotor lsv_r;
+    public DcMotor lsv_l;
+    public DcMotor lsh_r;
+    public DcMotor lsh_l;
 
     // Servos
-    Servo claw;
-    Servo intake;
-    Servo outtake;
+    public Servo claw;
+    public Servo intake;
+    public Servo outtake;
 
 
     //DO INITIALIZATION STEPS HERE
-     Ports(LinearOpMode opMode, Builder builder) {
+     public Ports(LinearOpMode opMode, Builder builder) {
 
          if (builder.allActive || builder.wheelsActive || builder.frActive) {
              fr = opMode.hardwareMap.get(DcMotor.class, "FR");
@@ -88,20 +88,20 @@ public class Ports {
      }
 
      public class Builder {
-         boolean wheelsActive = false;
-         boolean slidesActive = false;
-         boolean clawActive = false;
-         boolean intakeActive = false;
-         boolean outtakeActive = false;
-         boolean allActive = false;
-         boolean frActive = false;
-         boolean flActive = false;
-         boolean brActive = false;
-         boolean blActive = false;
-         boolean lsv_rActive = false;
-         boolean lsv_lActive = false;
-         boolean lsh_rActive = false;
-         boolean lsh_lActive = false;
-         boolean servosActive = false;
+         public boolean wheelsActive = false;
+         public boolean slidesActive = false;
+         public boolean clawActive = false;
+         public boolean intakeActive = false;
+         public boolean outtakeActive = false;
+         public boolean allActive = false;
+         public boolean frActive = false;
+         public boolean flActive = false;
+         public boolean brActive = false;
+         public boolean blActive = false;
+         public boolean lsv_rActive = false;
+         public boolean lsv_lActive = false;
+         public boolean lsh_rActive = false;
+         public boolean lsh_lActive = false;
+         public boolean servosActive = false;
      }
 }
