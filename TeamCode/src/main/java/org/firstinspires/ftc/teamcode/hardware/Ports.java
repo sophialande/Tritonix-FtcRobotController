@@ -36,9 +36,34 @@ public class Ports {
 
 
     //DO INITIALIZATION STEPS HERE
-     Ports(LinearOpMode opMode, boolean wheels, boolean slides, boolean claw, boolean intake, boolean outtake){
+     Ports(LinearOpMode opMode, boolean wheelsActive, boolean slidesActive, boolean clawActive,
+           boolean intakeActive, boolean outtakeActive, boolean allActive){
 
-         if(wheels) {
+         if(allActive) {
+             //Set the motor variables to their respective motors
+             fr = opMode.hardwareMap.get(DcMotor.class, "FR");
+             fl = opMode.hardwareMap.get(DcMotor.class, "FL");
+             br = opMode.hardwareMap.get(DcMotor.class, "BR");
+             bl = opMode.hardwareMap.get(DcMotor.class, "BL");
+
+             //Set the motors to run in the right direction
+             fr.setDirection(DcMotor.Direction.FORWARD);
+             fl.setDirection(DcMotor.Direction.REVERSE);
+             br.setDirection(DcMotor.Direction.FORWARD);
+             bl.setDirection(DcMotor.Direction.REVERSE);
+
+             lsv_r = opMode.hardwareMap.get(DcMotor.class, "lsv_r");
+             lsv_l = opMode.hardwareMap.get(DcMotor.class, "lsv_l");
+
+             lsh_r = opMode.hardwareMap.get(DcMotor.class, "lsh_r");
+             lsh_l = opMode.hardwareMap.get(DcMotor.class, "lsh_l");
+
+             claw = opMode.hardwareMap.get(Servo.class, "claw");
+             intake = opMode.hardwareMap.get(Servo.class, "intake");
+             outtake = opMode.hardwareMap.get(Servo.class, "outtake");
+         }
+
+         if(wheelsActive) {
              //Set the motor variables to their respective motors
              fr = opMode.hardwareMap.get(DcMotor.class, "FR");
              fl = opMode.hardwareMap.get(DcMotor.class, "FL");
@@ -52,7 +77,7 @@ public class Ports {
              bl.setDirection(DcMotor.Direction.REVERSE);
          }
 
-         if(slides) {
+         if(slidesActive) {
              lsv_r = opMode.hardwareMap.get(DcMotor.class, "lsv_r");
              lsv_l = opMode.hardwareMap.get(DcMotor.class, "lsv_l");
 
@@ -60,15 +85,15 @@ public class Ports {
              lsh_l = opMode.hardwareMap.get(DcMotor.class, "lsh_l");
          }
 
-         if(claw) {
+         if(clawActive) {
              claw = opMode.hardwareMap.get(Servo.class, "claw");
          }
 
-         if(intake) {
+         if(intakeActive) {
              intake = opMode.hardwareMap.get(Servo.class, "intake");
          }
 
-         if(outtake) {
+         if(outtakeActive) {
              outtake = opMode.hardwareMap.get(Servo.class, "outtake");
          }
     }
