@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode.auto.pushbot;
 
 import static org.firstinspires.ftc.teamcode.hardware.Driver.*;
-import static org.firstinspires.ftc.teamcode.hardware.Ports.bl;
-import static org.firstinspires.ftc.teamcode.hardware.Ports.br;
-import static org.firstinspires.ftc.teamcode.hardware.Ports.fl;
-import static org.firstinspires.ftc.teamcode.hardware.Ports.fr;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
