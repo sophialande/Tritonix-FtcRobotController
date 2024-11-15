@@ -37,64 +37,56 @@ public class Ports {
 
     //DO INITIALIZATION STEPS HERE
      Ports(LinearOpMode opMode, boolean wheelsActive, boolean slidesActive, boolean clawActive,
-           boolean intakeActive, boolean outtakeActive, boolean allActive){
+           boolean intakeActive, boolean outtakeActive, boolean allActive, boolean frActive,
+           boolean flActive, boolean brActive, boolean blActive, boolean lsv_rActive,
+           boolean lsv_lActive, boolean lsh_rActive, boolean lsh_lActive, boolean servosActive) {
 
-         if(allActive) {
-             //Set the motor variables to their respective motors
+         if (allActive || wheelsActive || frActive) {
              fr = opMode.hardwareMap.get(DcMotor.class, "FR");
-             fl = opMode.hardwareMap.get(DcMotor.class, "FL");
-             br = opMode.hardwareMap.get(DcMotor.class, "BR");
-             bl = opMode.hardwareMap.get(DcMotor.class, "BL");
-
-             //Set the motors to run in the right direction
              fr.setDirection(DcMotor.Direction.FORWARD);
-             fl.setDirection(DcMotor.Direction.REVERSE);
-             br.setDirection(DcMotor.Direction.FORWARD);
-             bl.setDirection(DcMotor.Direction.REVERSE);
-
-             lsv_r = opMode.hardwareMap.get(DcMotor.class, "lsv_r");
-             lsv_l = opMode.hardwareMap.get(DcMotor.class, "lsv_l");
-
-             lsh_r = opMode.hardwareMap.get(DcMotor.class, "lsh_r");
-             lsh_l = opMode.hardwareMap.get(DcMotor.class, "lsh_l");
-
-             claw = opMode.hardwareMap.get(Servo.class, "claw");
-             intake = opMode.hardwareMap.get(Servo.class, "intake");
-             outtake = opMode.hardwareMap.get(Servo.class, "outtake");
          }
 
-         if(wheelsActive) {
-             //Set the motor variables to their respective motors
-             fr = opMode.hardwareMap.get(DcMotor.class, "FR");
+         if (allActive || wheelsActive || flActive) {
              fl = opMode.hardwareMap.get(DcMotor.class, "FL");
-             br = opMode.hardwareMap.get(DcMotor.class, "BR");
-             bl = opMode.hardwareMap.get(DcMotor.class, "BL");
-
-             //Set the motors to run in the right direction
-             fr.setDirection(DcMotor.Direction.FORWARD);
              fl.setDirection(DcMotor.Direction.REVERSE);
+         }
+
+         if (allActive || wheelsActive || brActive) {
+             br = opMode.hardwareMap.get(DcMotor.class, "BR");
              br.setDirection(DcMotor.Direction.FORWARD);
+         }
+
+         if (allActive || wheelsActive || blActive) {
+             bl = opMode.hardwareMap.get(DcMotor.class, "BL");
              bl.setDirection(DcMotor.Direction.REVERSE);
          }
 
-         if(slidesActive) {
+         if (allActive || slidesActive || lsv_rActive) {
              lsv_r = opMode.hardwareMap.get(DcMotor.class, "lsv_r");
-             lsv_l = opMode.hardwareMap.get(DcMotor.class, "lsv_l");
+         }
 
+         if (allActive || slidesActive || lsv_lActive) {
+             lsv_l = opMode.hardwareMap.get(DcMotor.class, "lsv_l");
+         }
+
+         if (allActive || slidesActive || lsh_rActive) {
              lsh_r = opMode.hardwareMap.get(DcMotor.class, "lsh_r");
+         }
+
+         if (allActive || slidesActive || lsh_lActive) {
              lsh_l = opMode.hardwareMap.get(DcMotor.class, "lsh_l");
          }
 
-         if(clawActive) {
+         if (allActive || servosActive || clawActive) {
              claw = opMode.hardwareMap.get(Servo.class, "claw");
          }
 
-         if(intakeActive) {
+         if (allActive || servosActive || intakeActive) {
              intake = opMode.hardwareMap.get(Servo.class, "intake");
          }
 
-         if(outtakeActive) {
+         if (allActive || servosActive || outtakeActive) {
              outtake = opMode.hardwareMap.get(Servo.class, "outtake");
          }
-    }
+     }
 }
