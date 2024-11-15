@@ -36,57 +36,72 @@ public class Ports {
 
 
     //DO INITIALIZATION STEPS HERE
-     Ports(LinearOpMode opMode, boolean wheelsActive, boolean slidesActive, boolean clawActive,
-           boolean intakeActive, boolean outtakeActive, boolean allActive, boolean frActive,
-           boolean flActive, boolean brActive, boolean blActive, boolean lsv_rActive,
-           boolean lsv_lActive, boolean lsh_rActive, boolean lsh_lActive, boolean servosActive) {
+     Ports(LinearOpMode opMode, Builder builder) {
 
-         if (allActive || wheelsActive || frActive) {
+         if (builder.allActive || builder.wheelsActive || builder.frActive) {
              fr = opMode.hardwareMap.get(DcMotor.class, "FR");
              fr.setDirection(DcMotor.Direction.FORWARD);
          }
 
-         if (allActive || wheelsActive || flActive) {
+         if (builder.allActive || builder.wheelsActive || builder.flActive) {
              fl = opMode.hardwareMap.get(DcMotor.class, "FL");
              fl.setDirection(DcMotor.Direction.REVERSE);
          }
 
-         if (allActive || wheelsActive || brActive) {
+         if (builder.allActive || builder.wheelsActive || builder.brActive) {
              br = opMode.hardwareMap.get(DcMotor.class, "BR");
              br.setDirection(DcMotor.Direction.FORWARD);
          }
 
-         if (allActive || wheelsActive || blActive) {
+         if (builder.allActive || builder.wheelsActive || builder.blActive) {
              bl = opMode.hardwareMap.get(DcMotor.class, "BL");
              bl.setDirection(DcMotor.Direction.REVERSE);
          }
 
-         if (allActive || slidesActive || lsv_rActive) {
+         if (builder.allActive || builder.slidesActive || builder.lsv_rActive) {
              lsv_r = opMode.hardwareMap.get(DcMotor.class, "lsv_r");
          }
 
-         if (allActive || slidesActive || lsv_lActive) {
+         if (builder.allActive || builder.slidesActive || builder.lsv_lActive) {
              lsv_l = opMode.hardwareMap.get(DcMotor.class, "lsv_l");
          }
 
-         if (allActive || slidesActive || lsh_rActive) {
+         if (builder.allActive || builder.slidesActive || builder.lsh_rActive) {
              lsh_r = opMode.hardwareMap.get(DcMotor.class, "lsh_r");
          }
 
-         if (allActive || slidesActive || lsh_lActive) {
+         if (builder.allActive || builder.slidesActive || builder.lsh_lActive) {
              lsh_l = opMode.hardwareMap.get(DcMotor.class, "lsh_l");
          }
 
-         if (allActive || servosActive || clawActive) {
+         if (builder.allActive || builder.servosActive || builder.clawActive) {
              claw = opMode.hardwareMap.get(Servo.class, "claw");
          }
 
-         if (allActive || servosActive || intakeActive) {
+         if (builder.allActive || builder.servosActive || builder.intakeActive) {
              intake = opMode.hardwareMap.get(Servo.class, "intake");
          }
 
-         if (allActive || servosActive || outtakeActive) {
+         if (builder.allActive || builder.servosActive || builder.outtakeActive) {
              outtake = opMode.hardwareMap.get(Servo.class, "outtake");
          }
+     }
+
+     public class Builder {
+         boolean wheelsActive = false;
+         boolean slidesActive = false;
+         boolean clawActive = false;
+         boolean intakeActive = false;
+         boolean outtakeActive = false;
+         boolean allActive = false;
+         boolean frActive = false;
+         boolean flActive = false;
+         boolean brActive = false;
+         boolean blActive = false;
+         boolean lsv_rActive = false;
+         boolean lsv_lActive = false;
+         boolean lsh_rActive = false;
+         boolean lsh_lActive = false;
+         boolean servosActive = false;
      }
 }
