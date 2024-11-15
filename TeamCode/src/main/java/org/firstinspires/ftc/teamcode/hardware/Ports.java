@@ -18,46 +18,58 @@ public class Ports {
     //CREATE HARDWARE VARIABLES HERE
 
     //Motors
-    public static DcMotor fr;
-    public static DcMotor fl;
-    public static DcMotor br;
-    public static DcMotor bl;
+    DcMotor fr;
+    DcMotor fl;
+    DcMotor br;
+    DcMotor bl;
 
     // Linear slides
-    public static DcMotor lsv_r;
-    public static DcMotor lsv_l;
-    public static DcMotor lsh_r;
-    public static DcMotor lsh_l;
+    DcMotor lsv_r;
+    DcMotor lsv_l;
+    DcMotor lsh_r;
+    DcMotor lsh_l;
 
     // Servos
-    public static Servo claw;
-    public static Servo intake;
-    public static Servo outtake;
+    Servo claw;
+    Servo intake;
+    Servo outtake;
 
 
     //DO INITIALIZATION STEPS HERE
-    public static void init(LinearOpMode opMode){
+     Ports(LinearOpMode opMode, boolean wheels, boolean slides, boolean claw, boolean intake, boolean outtake){
 
-        //Set the motor variables to their respective motors
-        fr = opMode.hardwareMap.get(DcMotor.class, "FR");
-        fl = opMode.hardwareMap.get(DcMotor.class, "FL");
-        br = opMode.hardwareMap.get(DcMotor.class, "BR");
-        bl = opMode.hardwareMap.get(DcMotor.class, "BL");
+         if(wheels) {
+             //Set the motor variables to their respective motors
+             fr = opMode.hardwareMap.get(DcMotor.class, "FR");
+             fl = opMode.hardwareMap.get(DcMotor.class, "FL");
+             br = opMode.hardwareMap.get(DcMotor.class, "BR");
+             bl = opMode.hardwareMap.get(DcMotor.class, "BL");
 
-        //Set the motors to run in the right direction
-        fr.setDirection(DcMotor.Direction.FORWARD);
-        fl.setDirection(DcMotor.Direction.REVERSE);
-        br.setDirection(DcMotor.Direction.FORWARD);
-        bl.setDirection(DcMotor.Direction.REVERSE);
+             //Set the motors to run in the right direction
+             fr.setDirection(DcMotor.Direction.FORWARD);
+             fl.setDirection(DcMotor.Direction.REVERSE);
+             br.setDirection(DcMotor.Direction.FORWARD);
+             bl.setDirection(DcMotor.Direction.REVERSE);
+         }
 
-        lsv_r = opMode.hardwareMap.get(DcMotor.class, "lsv_r");
-        lsv_l = opMode.hardwareMap.get(DcMotor.class, "lsv_l");
+         if(slides) {
+             lsv_r = opMode.hardwareMap.get(DcMotor.class, "lsv_r");
+             lsv_l = opMode.hardwareMap.get(DcMotor.class, "lsv_l");
 
-        lsh_r = opMode.hardwareMap.get(DcMotor.class, "lsh_r");
-        lsh_l = opMode.hardwareMap.get(DcMotor.class, "lsh_l");
+             lsh_r = opMode.hardwareMap.get(DcMotor.class, "lsh_r");
+             lsh_l = opMode.hardwareMap.get(DcMotor.class, "lsh_l");
+         }
 
-        claw = opMode.hardwareMap.get(Servo.class, "claw");
-        intake = opMode.hardwareMap.get(Servo.class, "intake");
-        outtake = opMode.hardwareMap.get(Servo.class, "outtake");
+         if(claw) {
+             claw = opMode.hardwareMap.get(Servo.class, "claw");
+         }
+
+         if(intake) {
+             intake = opMode.hardwareMap.get(Servo.class, "intake");
+         }
+
+         if(outtake) {
+             outtake = opMode.hardwareMap.get(Servo.class, "outtake");
+         }
     }
 }
