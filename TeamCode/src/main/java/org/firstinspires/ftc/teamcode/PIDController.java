@@ -16,18 +16,20 @@ public class PIDController {
     double Ki;
     double Kd;
     double Kf;
+    int lastError;
+    double integralSum;
+    ElapsedTime elapsedTime;
 
     public PIDController(double Kp, double Ki, double Kd, double Kf){
         this.Kp = Kp;
         this.Ki = Ki;
         this.Kd = Kd;
         this.Kf = Kf;
+        elapsedTime = new ElapsedTime();
+        lastError = 0;
+        integralSum = 0;
     }
 
-    ElapsedTime elapsedTime = new ElapsedTime();
-    double integralSum = 0;
-
-    int lastError;
 
     void setup(int error){
         lastError = error;
@@ -36,7 +38,7 @@ public class PIDController {
 
     double evaluate(int error){
         integralSum += error * elapsedTime.time();
-        double output = error * Kp + integralSum*Ki + (error - lastError)*Kd/elapsedTime.time() + Kf;
+        double output = error * Kp + integralSum * Ki + (error - lastError)*Kd/elapsedTime.time() + Kf;
         elapsedTime.reset();
         return(output);
     }

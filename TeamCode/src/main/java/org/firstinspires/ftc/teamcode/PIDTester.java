@@ -8,37 +8,42 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
 import org.firstinspires.ftc.teamcode.hardware.Telem;
+
+import java.util.concurrent.TimeUnit;
 
 //Create an opmode class
 @Config
 @Autonomous(name="PID Tester")
 public class PIDTester extends LinearOpMode {
 
-    public static double Kp;
-    public static double Ki;
-    public static double Kd;
-    public static double Kf;
+    public static double Kp = 0;
+    public static double Ki = 0;
+    public static double Kd = 0;
+    public static double Kf = 0;
 
-    public static PIDController pidController = new PIDController(Kp, Ki, Kd, Kf);
+    public static PIDController pidController;
     public static int target;
 
     //Create the opmode function
     @Override
     public void runOpMode(){
         //initialize
-        DcMotor slide = hardwareMap.get(DcMotor.class, "lsv_r");
+        pidController = new PIDController(Kp, Ki, Kd, Kf);
 
-        slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        DcMotor slide = hardwareMap.get(DcMotor.class, "lsv_r");
         slide.setDirection(DcMotor.Direction.REVERSE);
+        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         Telemetry dashboardTelemetry = FtcDashboard.getInstance().getTelemetry();
 
-
+        dashboardTelemetry.addData("Position", slide.getCurrentPosition());
+        dashboardTelemetry.update();
 
         //wait for the game to start
         waitForStart();
@@ -46,20 +51,34 @@ public class PIDTester extends LinearOpMode {
 //
 //        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        slide.setPower(0.2);
-//
+
 //        while(slide.isBusy()){
 //            telemetry.addData("position", slide.getCurrentPosition());
+//            dashboardTelemetry.addData("Power", slide.getPower());
 //            telemetry.update();
+//            dashboardTelemetry.update();
 //        }
-//        slide.setPower(0);
+//        slide.setPower(0)
+//        slide.setPower(.5);
+//        static do
+//        while(opModeIsActive()){
+//            slide.setPower(1);
+//        }
 
 
         pidController.setup(target-slide.getCurrentPosition());
+
+        ElapsedTime elapsedTime = new ElapsedTime();
+
         while(opModeIsActive()){
-            double power = pidController.evaluate(target-slide.getCurrentPosition());
-            slide.setPower(power);
-            dashboardTelemetry.addData("Power", power);
+            slide.setPower(pidController.evaluate(target-slide.getCurrentPosition()));
+            dashboardTelemetry.addData("Position", slide.getCurrentPosition());
             dashboardTelemetry.update();
+            if(slide.getCurrentPosition() == 2010){
+                telemetry.addData("Wavelength", elapsedTime);
+                telemetry.update();
+                elapsedTime.reset();
+            }
         }
 
     }
