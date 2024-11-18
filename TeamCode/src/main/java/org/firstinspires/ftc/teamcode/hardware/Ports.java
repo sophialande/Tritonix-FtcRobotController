@@ -87,7 +87,7 @@ public class Ports {
          }
      }
 
-     public class Builder {
+     public static class Builder {
          public boolean wheelsActive = false;
          public boolean slidesActive = false;
          public boolean clawActive = false;

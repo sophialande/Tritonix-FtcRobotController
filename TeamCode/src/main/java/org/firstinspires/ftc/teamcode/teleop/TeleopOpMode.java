@@ -17,7 +17,8 @@ public class TeleopOpMode extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        builder.allActive = true;
+        builder = new Ports.Builder();
+        builder.wheelsActive = true;
         ports = new Ports(this, builder);
 
         waitForStart();
@@ -32,10 +33,10 @@ public class TeleopOpMode extends LinearOpMode {
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
-            double fr = drive - strafe - yaw;
-            double fl = drive + strafe + yaw;
-            double br = drive + strafe - yaw;
-            double bl = drive - strafe + yaw;
+            double fr = Math.pow(drive - strafe - yaw, 3);
+            double fl = Math.pow(drive + strafe + yaw, 3);
+            double br = Math.pow(drive + strafe - yaw, 3);
+            double bl = Math.pow(drive - strafe + yaw, 3);
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
@@ -56,39 +57,39 @@ public class TeleopOpMode extends LinearOpMode {
             ports.br.setPower(br);
 
 
-            // VERTICAL LINEAR SLIDES (UP AND DOWN)
-            if (gamepad1.y) {
-                Driver.linearSlidesVUp(ports, 1, 3200);
-            } else {
-                Driver.linearSlidesVUp(ports, 0, 3200);
-            }
-
-            if (gamepad1.a) {
-                Driver.linearSlidesVDown(ports, -1, -1300);
-            } else {
-                Driver.linearSlidesVDown(ports, 0, -1300);
-            }
-
-            // HORIZONTAL LINEAR SLIDES (IN AND OUT)
-            if (gamepad1.x) {
-                Driver.linearSlidesHUp(ports, 1, 3200);
-            } else {
-                Driver.linearSlidesHUp(ports, 0, 3200);
-            }
-
-            if (gamepad1.b) {
-                Driver.linearSlidesHDown(ports, -1, -1300);
-            } else {
-                Driver.linearSlidesHDown(ports, 0, -1300);
-            }
-
-            // CLAW
-            if (gamepad1.dpad_right) {
-                Driver.claw(ports, 1);
-            }
-            if (gamepad1.dpad_left) {
-                Driver.claw(ports, -1);
-            }
+//            // VERTICAL LINEAR SLIDES (UP AND DOWN)
+//            if (gamepad1.y) {
+//                Driver.linearSlidesVUp(ports, 1, 3200);
+//            } else {
+//                Driver.linearSlidesVUp(ports, 0, 3200);
+//            }
+//
+//            if (gamepad1.a) {
+//                Driver.linearSlidesVDown(ports, -1, -1300);
+//            } else {
+//                Driver.linearSlidesVDown(ports, 0, -1300);
+//            }
+//
+//            // HORIZONTAL LINEAR SLIDES (IN AND OUT)
+//            if (gamepad1.x) {
+//                Driver.linearSlidesHUp(ports, 1, 3200);
+//            } else {
+//                Driver.linearSlidesHUp(ports, 0, 3200);
+//            }
+//
+//            if (gamepad1.b) {
+//                Driver.linearSlidesHDown(ports, -1, -1300);
+//            } else {
+//                Driver.linearSlidesHDown(ports, 0, -1300);
+//            }
+//
+//            // CLAW
+//            if (gamepad1.dpad_right) {
+//                Driver.claw(ports, 1);
+//            }
+//            if (gamepad1.dpad_left) {
+//                Driver.claw(ports, -1);
+//            }
             //change
 
             // INTAKE/OUTTAKE (DO LATER BECAUSE THEY HAVEN'T DECIDED YET
@@ -100,10 +101,10 @@ public class TeleopOpMode extends LinearOpMode {
             telemetry.addData("Back Left Pow", ports.bl.getPower());
             telemetry.addData("Front Right Pow", ports.fr.getPower());
             telemetry.addData("Back Right Pow", ports.br.getPower());
-            telemetry.addData("Linear Slide Vertical Right Position", ports.lsv_r.getCurrentPosition());
-            telemetry.addData("Linear Slide Vertical Left Position", ports.lsv_l.getCurrentPosition());
-            telemetry.addData("Linear Slide Horizontal Right Position", ports.lsh_r.getCurrentPosition());
-            telemetry.addData("Linear Slide Horizontal Left Position", ports.lsh_l.getCurrentPosition());
+//            telemetry.addData("Linear Slide Vertical Right Position", ports.lsv_r.getCurrentPosition());
+//            telemetry.addData("Linear Slide Vertical Left Position", ports.lsv_l.getCurrentPosition());
+//            telemetry.addData("Linear Slide Horizontal Right Position", ports.lsh_r.getCurrentPosition());
+//            telemetry.addData("Linear Slide Horizontal Left Position", ports.lsh_l.getCurrentPosition());
             //telemetry.addData("Claw position", Ports.claw.getCurrentPosition());
             Telem.update(this);
         }
