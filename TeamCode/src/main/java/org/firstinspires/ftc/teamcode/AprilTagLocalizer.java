@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import android.util.Size;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -23,11 +23,26 @@ public class AprilTagLocalizer extends LinearOpMode {
     Telemetry dashboardTelemetry;
     List<AprilTagDetection> aprilTagDetections;
 
+    double tagYaw;
+    double xRelative;
+    double yRelative;
+    double yaw;
+    double x;
+    double y;
+
     @Override
     public void runOpMode() {
         aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();
-        myVisionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTagProcessor);
+        myVisionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .addProcessor(aprilTagProcessor)
+                .setCameraResolution(new Size(640, 480))
+                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
+                .setAutoStopLiveView(true)
+                .build();
         dashboardTelemetry = FtcDashboard.getInstance().getTelemetry();
+
+        FtcDashboard.getInstance().startCameraStream(myVisionPortal, 30);
 
         waitForStart();
 
@@ -37,14 +52,36 @@ public class AprilTagLocalizer extends LinearOpMode {
             for (AprilTagDetection aprilTagDetection : aprilTagDetections) {
 
                 if (aprilTagDetection.metadata != null) {
-                    dashboardTelemetry.addData("ID", aprilTagDetection.id);
-                    dashboardTelemetry.addData("X", aprilTagDetection.ftcPose.x);
-                    dashboardTelemetry.addData("Y", aprilTagDetection.ftcPose.y);
-                    dashboardTelemetry.addData("Z", aprilTagDetection.ftcPose.z);
-                    dashboardTelemetry.addData("Pitch", aprilTagDetection.ftcPose.pitch);
-                    dashboardTelemetry.addData("Roll", aprilTagDetection.ftcPose.roll);
-                    dashboardTelemetry.addData("Yaw", aprilTagDetection.ftcPose.yaw);
+                    tagYaw = Math.toDegrees(Math.atan2(2 * (aprilTagDetection.metadata.fieldOrientation.w * aprilTagDetection.metadata.fieldOrientation.z + aprilTagDetection.metadata.fieldOrientation.x * aprilTagDetection.metadata.fieldOrientation.y), 1 - 2 * (Math.pow(aprilTagDetection.metadata.fieldOrientation.y, 2) + Math.pow(aprilTagDetection.metadata.fieldOrientation.z, 2))));
+                    xRelative = aprilTagDetection.ftcPose.range*Math.sin(Math.toRadians(90-aprilTagDetection.ftcPose.bearing-aprilTagDetection.ftcPose.yaw));
+                    yRelative = aprilTagDetection.ftcPose.range*Math.cos(Math.toRadians(90-aprilTagDetection.ftcPose.bearing-aprilTagDetection.ftcPose.yaw));
+                    yaw = aprilTagDetection.ftcPose.yaw + tagYaw;
+                    if (tagYaw == 0) {
+                        yaw += 180;
+                        x = -aprilTagDetection.metadata.fieldPosition.get(0) + xRelative;
+                        y = -aprilTagDetection.metadata.fieldPosition.get(1) + yRelative;
+                    } else if (tagYaw == 90) {
+                        x = -aprilTagDetection.metadata.fieldPosition.get(0) + yRelative;
+                        y = -aprilTagDetection.metadata.fieldPosition.get(1) + xRelative;
+                    } else if (tagYaw == 180) {
+                        yaw -= 180;
+                        x = -aprilTagDetection.metadata.fieldPosition.get(0) - yRelative;
+                        y = -aprilTagDetection.metadata.fieldPosition.get(1) - xRelative;
+                    } else if (tagYaw == -90) {
+                        x = -aprilTagDetection.metadata.fieldPosition.get(0) + yRelative;
+                        y = -aprilTagDetection.metadata.fieldPosition.get(1) - xRelative;
+                    } else {
+                        dashboardTelemetry.addLine("Invalid Tag");
+                    }
+                    dashboardTelemetry.addData("X", x);
+                    dashboardTelemetry.addData("Y", y);
+                    dashboardTelemetry.addData("Yaw", yaw);
+                    dashboardTelemetry.addData("tagYaw", tagYaw);
+                    dashboardTelemetry.addData("xRelative", xRelative);
+                    dashboardTelemetry.addData("yRelative", yRelative);
                     dashboardTelemetry.addLine();
+                } else {
+                    dashboardTelemetry.addLine("Tag is null");
                 }
             }
             dashboardTelemetry.update();
