@@ -29,10 +29,15 @@ public class Ports {
     public DcMotor lsh_r;
     public DcMotor lsh_l;
 
-    // Servos
-    public Servo claw;
-    public Servo intake;
-    public Servo outtake;
+    // Intake Servos
+    public Servo intakeClaw;
+    public Servo intakePitch;
+    public Servo intakeRoll;
+
+    //Outtake Servos
+    public Servo outtakeClaw;
+    public Servo outtakePitchL;
+    public Servo outtakePitchR;
 
 
     //DO INITIALIZATION STEPS HERE
@@ -40,26 +45,27 @@ public class Ports {
 
          if (builder.allActive || builder.wheelsActive || builder.frActive) {
              fr = opMode.hardwareMap.get(DcMotor.class, "FR");
-             fr.setDirection(DcMotor.Direction.FORWARD);
+             fr.setDirection(DcMotor.Direction.REVERSE);
          }
 
          if (builder.allActive || builder.wheelsActive || builder.flActive) {
              fl = opMode.hardwareMap.get(DcMotor.class, "FL");
-             fl.setDirection(DcMotor.Direction.REVERSE);
+             fl.setDirection(DcMotor.Direction.FORWARD);
          }
 
          if (builder.allActive || builder.wheelsActive || builder.brActive) {
              br = opMode.hardwareMap.get(DcMotor.class, "BR");
-             br.setDirection(DcMotor.Direction.FORWARD);
+             br.setDirection(DcMotor.Direction.REVERSE);
          }
 
          if (builder.allActive || builder.wheelsActive || builder.blActive) {
              bl = opMode.hardwareMap.get(DcMotor.class, "BL");
-             bl.setDirection(DcMotor.Direction.REVERSE);
+             bl.setDirection(DcMotor.Direction.FORWARD);
          }
 
          if (builder.allActive || builder.slidesActive || builder.lsv_rActive) {
              lsv_r = opMode.hardwareMap.get(DcMotor.class, "lsv_r");
+             lsv_r.setDirection(DcMotor.Direction.REVERSE);
          }
 
          if (builder.allActive || builder.slidesActive || builder.lsv_lActive) {
@@ -72,27 +78,47 @@ public class Ports {
 
          if (builder.allActive || builder.slidesActive || builder.lsh_lActive) {
              lsh_l = opMode.hardwareMap.get(DcMotor.class, "lsh_l");
+             lsh_l.setDirection(DcMotor.Direction.REVERSE);
          }
 
-         if (builder.allActive || builder.servosActive || builder.clawActive) {
-             claw = opMode.hardwareMap.get(Servo.class, "claw");
+         if (builder.allActive || builder.servosActive || builder.intakeClawActive) {
+             intakeClaw = opMode.hardwareMap.get(Servo.class, "intakeClaw");
          }
 
-         if (builder.allActive || builder.servosActive || builder.intakeActive) {
-             intake = opMode.hardwareMap.get(Servo.class, "intake");
+         if (builder.allActive || builder.servosActive || builder.intakePitchActive) {
+             intakePitch = opMode.hardwareMap.get(Servo.class, "intakePitch");
          }
 
-         if (builder.allActive || builder.servosActive || builder.outtakeActive) {
-             outtake = opMode.hardwareMap.get(Servo.class, "outtake");
+         if (builder.allActive || builder.servosActive || builder.intakeRollActive) {
+             intakeRoll = opMode.hardwareMap.get(Servo.class, "intakeRoll");
+         }
+
+         if (builder.allActive || builder.servosActive || builder.intakeClawActive) {
+             intakeClaw = opMode.hardwareMap.get(Servo.class, "intakeClaw");
+         }
+
+         if (builder.allActive || builder.servosActive || builder.outtakeClawActive) {
+             outtakeClaw = opMode.hardwareMap.get(Servo.class, "outtakeClaw");
+         }
+
+         if (builder.allActive || builder.servosActive || builder.outtakePitchLActive) {
+             outtakePitchL = opMode.hardwareMap.get(Servo.class, "outtakePitchL");
+         }
+
+         if (builder.allActive || builder.servosActive || builder.outtakePitchRActive) {
+             outtakePitchR = opMode.hardwareMap.get(Servo.class, "outtakePitchR");
          }
      }
 
      public static class Builder {
          public boolean wheelsActive = false;
          public boolean slidesActive = false;
-         public boolean clawActive = false;
-         public boolean intakeActive = false;
-         public boolean outtakeActive = false;
+         public boolean intakeClawActive = false;
+         public boolean intakePitchActive = false;
+         public boolean intakeRollActive = false;
+         public boolean outtakeClawActive = false;
+         public boolean outtakePitchLActive = false;
+         public boolean outtakePitchRActive = false;
          public boolean allActive = false;
          public boolean frActive = false;
          public boolean flActive = false;

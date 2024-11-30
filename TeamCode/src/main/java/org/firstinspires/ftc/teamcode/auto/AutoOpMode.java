@@ -1,14 +1,15 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import static org.firstinspires.ftc.teamcode.hardware.Driver.*;
-import static org.firstinspires.ftc.teamcode.hardware.Ports.*;
+import static org.firstinspires.ftc.teamcode.hardware.Driver.claw;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /*
  * USAGE GUIDE:
@@ -26,23 +27,24 @@ public class AutoOpMode extends LinearOpMode {
 
     Ports ports;
     Ports.Builder builder;
+    public static double position;
+    public static long duration;
+    Telemetry dashboardTelemetry;
 
     //Create the opmode function
     @Override
     public void runOpMode(){
         //initialize
-        builder.wheelsActive = true;
+        builder = new Ports.Builder();
+        builder.servosActive = true;
         ports = new Ports(this, builder);
-
-        ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ports.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ports.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ports.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        dashboardTelemetry = FtcDashboard.getInstance().getTelemetry();
 
         //wait for the game to start
         waitForStart();
 
-        drift(this, ports, 0.4, 100, 0, 100);
-
+        ports.outtakePitchL.setPosition(0);
+        ports.outtakePitchR.setPosition(1);
+        sleep(3000);
     }
 }

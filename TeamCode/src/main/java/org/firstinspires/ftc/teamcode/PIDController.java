@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.*;
 
 /*
@@ -16,11 +17,14 @@ public class PIDController {
     double Ki;
     double Kd;
     double Kf;
+    int tolerance;
     int lastError;
     double integralSum;
     ElapsedTime elapsedTime;
+    DcMotor slide;
+    boolean isSetup = false;
 
-    public PIDController(double Kp, double Ki, double Kd, double Kf){
+    public PIDController(double Kp, double Ki, double Kd, double Kf, int tolerance, DcMotor output){
         this.Kp = Kp;
         this.Ki = Ki;
         this.Kd = Kd;
@@ -28,18 +32,32 @@ public class PIDController {
         elapsedTime = new ElapsedTime();
         lastError = 0;
         integralSum = 0;
+        slide = output;
+        this.tolerance = tolerance;
     }
 
 
-    void setup(int error){
+    public void setup(int error){
         lastError = error;
         elapsedTime.reset();
     }
 
-    double evaluate(int error){
+    public double evaluate(int error){
         integralSum += error * elapsedTime.time();
         double output = error * Kp + integralSum * Ki + (error - lastError)*Kd/elapsedTime.time() + Kf;
         elapsedTime.reset();
         return(output);
+    }
+
+    public void runTo(int target){
+        if(!isSetup){
+            setup(target-slide.getCurrentPosition());
+            isSetup = true;
+        }
+        while(slide.getCurrentPosition() > target+tolerance || slide.getCurrentPosition() < target-tolerance){
+            slide.setPower(evaluate(target-slide.getCurrentPosition()));
+        }
+        slide.setPower(0);
+        isSetup = false;
     }
 }

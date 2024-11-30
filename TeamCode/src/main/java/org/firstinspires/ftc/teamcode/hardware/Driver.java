@@ -277,7 +277,7 @@ public class Driver {
     }
 
     public static void claw(Ports ports, double position) {
-        ports.claw.setPosition(position);
+        ports.intakeClaw.getController().setServoPosition(0, position);
     }
 
     public static void linearSlidesHUp(Ports ports, double power, double maxExtension) {
