@@ -32,7 +32,7 @@ public class AprilTagLocalizer {
 
     double xPos = 0; double yPos = 0; double zPos = 0; double pitch = 0; double yaw = 0; double roll = 0;
 
-    public void setup(LinearOpMode opMode) {
+    public AprilTagLocalizer (LinearOpMode opMode) {
         aprilTagProcessor = AprilTagProcessor.easyCreateWithDefaults();
         myVisionPortal = new VisionPortal.Builder()
                 .setCamera(opMode.hardwareMap.get(WebcamName.class, "Webcam 1"))

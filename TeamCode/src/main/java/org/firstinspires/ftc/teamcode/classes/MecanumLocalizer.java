@@ -29,7 +29,13 @@ public class MecanumLocalizer {
     int prevbl = 0;
     int diffbl = 0;
 
-    public Pose3D loop(Ports ports) {
+    Ports ports;
+
+    public MecanumLocalizer(Ports ports) {
+        this.ports = ports;
+    }
+
+    public Pose3D loop() {
         if (elapsedTime.seconds() < 0.25) {
 
             prevfr = currfr;
