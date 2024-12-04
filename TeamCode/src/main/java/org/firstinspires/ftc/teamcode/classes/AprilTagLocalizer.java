@@ -18,6 +18,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AprilTagLocalizer {
     AprilTagProcessor aprilTagProcessor;
@@ -72,6 +73,6 @@ public class AprilTagLocalizer {
             }
             xPos /= sumList.size(); yPos /= sumList.size(); zPos /= sumList.size(); pitch /= sumList.size(); yaw /= sumList.size(); roll /= sumList.size();
         }
-        return new Pose3D(new Position(DistanceUnit.INCH, xPos, yPos, zPos, timeLastDetection.nanoseconds()/1000000000), new YawPitchRollAngles(AngleUnit.DEGREES, yaw, pitch, roll, timeLastDetection.nanoseconds()/1000000000));
+        return new Pose3D(new Position(DistanceUnit.INCH, xPos, yPos, zPos, timeLastDetection.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES, yaw, pitch, roll, timeLastDetection.time(TimeUnit.SECONDS)));
     }
 }
