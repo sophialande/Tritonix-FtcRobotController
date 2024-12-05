@@ -141,6 +141,7 @@ public class TeleopOpMode extends LinearOpMode {
                 ports.lsh_r.setPower(0);
                 ports.lsh_l.setPower(0);
             }
+            // FLIPS THE OUTTAKE CLAW OVER THE ROBOT FROM OUTSIDE TO INSIDE
             if(currGamepad2.dpad_up){
                 ports.outtakePitchL.setPosition(1);
                 ports.outtakePitchR.setPosition(0);
@@ -148,19 +149,22 @@ public class TeleopOpMode extends LinearOpMode {
                 ports.outtakePitchL.setPosition(0);
                 ports.outtakePitchR.setPosition(1);
             }
+            // opens and closes outtake claw
             if(currGamepad2.dpad_right){
                 ports.outtakeClaw.setPosition(0.25);
             } else if(currGamepad2.dpad_left){
                 ports.outtakeClaw.setPosition(0);
             }
+            // open and closes intake claw
             if(currGamepad2.x && !prevGamepad2.x){
                 if(intakeInverse) {
-                    ports.intakeClaw.setPosition(0.05);
+                    ports.intakeClaw.setPosition(0.85); // open
                     intakeInverse = false;
                 } else {
-                    ports.intakeClaw.setPosition(0.03);
+                    ports.intakeClaw.setPosition(0.05); // closed
                 }
             }
+            // rotates intake claw up and down
             if(currGamepad2.a && !prevGamepad2.a){
                 if(intakeInverse){
                     ports.intakePitch.setPosition(0.4);
@@ -169,6 +173,7 @@ public class TeleopOpMode extends LinearOpMode {
                     ports.intakePitch.setPosition(0.1);
                 }
             }
+            // horizontal rotates intake claw
             if(currGamepad2.b) {
                 if(intakeInverse){
                     ports.intakeRoll.setPosition(ports.intakeRoll.getPosition() + elapsedTime.seconds());
@@ -189,50 +194,83 @@ public class TeleopOpMode extends LinearOpMode {
                 lsv_rController.setup(-ports.lsv_r.getCurrentPosition());
             }
             if(handoffStep == 1){
-                ports.intakeClaw.setPosition(0.05);
+                // set claw to closed
+                ports.intakeClaw.setPosition(0.85);
+                // set intake claw open
                 ports.outtakeClaw.setPosition(0.15);
+                telemetry.addLine("set intake claw closed, set outtake claw open");
+                telemetry.update();
+                sleep(5000);
+                // bring intake claw up and over
                 ports.intakePitch.setPosition(0.4);
+                // bring outtake claw up and over
                 ports.outtakePitchL.setPosition(0);
                 ports.outtakePitchR.setPosition(1);
+                telemetry.addLine("set intake claw up and over, set outtake claw up and over");
+                telemetry.update();
+                sleep(5000);
+                // bring slides out enough so that the incoming claw doesn't bash them
                 if(ports.lsh_l.getCurrentPosition() < 1700 || ports.lsh_r.getCurrentPosition() < 1700){
+                    sleep(5000);
                     ports.lsh_l.setPower(1);
                     ports.lsh_r.setPower(1);
                 } else {
+                    sleep(5000);
                     ports.lsh_l.setPower(0);
                     ports.lsh_r.setPower(0);
                 }
+                // bring linear slides down
+                sleep(5000);
                 ports.lsv_l.setPower(lsv_lController.evaluate(-ports.lsv_l.getCurrentPosition()));
                 ports.lsv_r.setPower(lsv_rController.evaluate(-ports.lsv_r.getCurrentPosition()));
+                sleep(5000);
+                // begin handoff setup 2
                 if((ports.lsv_l.getCurrentPosition() < 20 || ports.lsv_r.getCurrentPosition() < 20) && (ports.lsh_l.getCurrentPosition() < 1700 || ports.lsh_r.getCurrentPosition() < 1700)){
                     handoffStep = 2;
+                    telemetry.addLine("here now 1!");
                 }
             }
-            if(handoffStep == 2){
-                ports.intakeClaw.setPosition(0.04);
-                ports.lsh_l.setPower(1);
-                ports.lsh_r.setPower(1);
-                if(ports.lsh_l.getCurrentPosition() <  940 || ports.lsh_r.getCurrentPosition() < 940){
-                    ports.lsh_l.setPower(0);
-                    ports.lsh_r.setPower(0);
-                    handoffStep = 3;
-                }
-            }
-            if(handoffStep == 3){
-                ports.outtakeClaw.setPosition(0.25);
-                ports.intakeClaw.setPosition(0.03);
-                if(ports.intakeClaw.getPosition() < 0.35){
-                    handoffStep = 4;
-                }
-            }
-            if(handoffStep == 4){
-                ports.lsh_l.setPower(1);
-                ports.lsh_r.setPower(1);
-                if(ports.lsh_l.getCurrentPosition() > 1700 || ports.lsh_r.getCurrentPosition() > 1700){
-                    ports.lsh_l.setPower(0);
-                    ports.lsh_r.setPower(0);
-                    handoffStep = 0;
-                }
-            }
+//            if(handoffStep == 2){
+//                telemetry.addLine("here now 2!");
+//                // slightly widen intake claw so it's ready to hand the specimen off to the outtake claw
+//                ports.intakeClaw.setPosition(0.04);
+//                // bring the horizontal linear slides in
+//                ports.lsh_l.setPower(1);
+//                ports.lsh_r.setPower(1);
+//                // begin step 3
+//                if(ports.lsh_l.getCurrentPosition() <  940 || ports.lsh_r.getCurrentPosition() < 940){
+//                    ports.lsh_l.setPower(0);
+//                    ports.lsh_r.setPower(0);
+//                    handoffStep = 3;
+//                }
+//            }
+//            if(handoffStep == 3){
+//                // outtake claw grabs onto the specimen
+//                ports.outtakeClaw.setPosition(0.25);
+//                // intake claw releases specimen
+//                ports.intakeClaw.setPosition(0.03);
+//                // begin handoff step 4
+//                if(ports.intakeClaw.getPosition() < 0.35){
+//                    handoffStep = 4;
+//                }
+//            }
+//            if(handoffStep == 4){
+//                // bring horizontal linear slides out enough
+//                ports.lsh_l.setPower(1);
+//                ports.lsh_r.setPower(1);
+//                if(ports.lsh_l.getCurrentPosition() > 1700 || ports.lsh_r.getCurrentPosition() > 1700){
+//                    ports.lsh_l.setPower(0);
+//                    ports.lsh_r.setPower(0);
+//                    handoffStep = 0;
+//                }
+//            }
+
+            // WHAT NEEDS TO BE ADDED TO GAMEPAD 1
+            // low basket set position and high basket set position
+            // low chamber and high chamber set position
+            // move a set distance back from the chamber to lock the specimen on the hanging bar
+
+            // and make a gamepad 2 function for the bumper that widens the outtake claw slightly before the manual handoff to the outtake claw
 
 
             //TELEMETRY
@@ -241,6 +279,8 @@ public class TeleopOpMode extends LinearOpMode {
             telemetry.addData("Back Left Pow", ports.bl.getPower());
             telemetry.addData("Front Right Pow", ports.fr.getPower());
             telemetry.addData("Back Right Pow", ports.br.getPower());
+            telemetry.addData("Intake Claw Position", ports.intakeClaw.getPosition());
+            telemetry.addData("Outtake Claw Position", ports.outtakeClaw.getPosition());
             telemetry.addData("Linear Slide Vertical Right Position", ports.lsv_r.getCurrentPosition());
             telemetry.addData("Linear Slide Vertical Left Position", ports.lsv_l.getCurrentPosition());
             telemetry.addData("Linear Slide Horizontal Right Position", ports.lsh_r.getCurrentPosition());
