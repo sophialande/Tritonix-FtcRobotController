@@ -29,6 +29,8 @@ public class AprilTagLocalizer {
     CircularStack<Pose3D> aprilLocusStack;
     ElapsedTime timeLastDetection;
 
+    Pose3D out;
+
     double xPos = 0; double yPos = 0; double zPos = 0; double pitch = 0; double yaw = 0; double roll = 0;
 
     public AprilTagLocalizer (LinearOpMode opMode) {
@@ -72,6 +74,8 @@ public class AprilTagLocalizer {
             }
             xPos /= sumList.size(); yPos /= sumList.size(); zPos /= sumList.size(); pitch /= sumList.size(); yaw /= sumList.size(); roll /= sumList.size();
         }
-        return new Pose3D(new Position(DistanceUnit.INCH, xPos, yPos, zPos, timeLastDetection.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES, yaw, pitch, roll, timeLastDetection.time(TimeUnit.SECONDS)));
+        out = new Pose3D(new Position(DistanceUnit.INCH, xPos, yPos, zPos, timeLastDetection.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES, yaw, pitch, roll, timeLastDetection.time(TimeUnit.SECONDS)));
+        dashboardTelemetry.addData("April Tag Estimate", out);
+        return out;
     }
 }
