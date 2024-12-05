@@ -26,8 +26,6 @@ public class Localization {
 
     double radianYaw;
 
-    public static Pose3D cameraRelativePos;
-
     public Localization(LinearOpMode opMode, Ports ports, Pose3D startingPosition) {
         robotPosition = startingPosition;
         this.ports = ports;
@@ -48,10 +46,10 @@ public class Localization {
 
         if (!(aprilTagPos.x == 0 && aprilTagPos.y == 0 && aprilTagPos.z == 0 && aprilTagRot.getRoll() == 0)){
             robotPosition = new Pose3D(new Position(DistanceUnit.INCH,
-                    aprilTagPos.x - cameraRelativePos.getPosition().x,
-                    aprilTagPos.y - cameraRelativePos.getPosition().y,
+                    aprilTagPos.x,
+                    aprilTagPos.y,
                     0, aprilTagPos.acquisitionTime), new YawPitchRollAngles(AngleUnit.DEGREES,
-                    aprilTagRot.getYaw() - cameraRelativePos.getOrientation().getYaw(),
+                    aprilTagRot.getYaw(),
                     0, 0, aprilTagRot.getAcquisitionTime()));
             mecanumPositionEstimate = robotPosition;
         } else {
