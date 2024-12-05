@@ -1,11 +1,18 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.classes.Localization;
 import org.firstinspires.ftc.teamcode.classes.PIDController;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
 import org.firstinspires.ftc.teamcode.hardware.Telem;
@@ -31,6 +38,11 @@ public class TeleopOpMode extends LinearOpMode {
 
     PIDController lsv_lController;
     PIDController lsv_rController;
+
+    Localization localizer;
+
+    public static Position startingPosition = new Position(DistanceUnit.INCH, 0, 0, 0, 0);
+    public static YawPitchRollAngles startingRotation = new YawPitchRollAngles(AngleUnit.DEGREES, 0, 0, 0, 0);
 
     @Override
     public void runOpMode() {
@@ -67,12 +79,16 @@ public class TeleopOpMode extends LinearOpMode {
         currGamepad1 = new Gamepad();
         currGamepad2 = new Gamepad();
 
+        localizer = new Localization(this, ports, new Pose3D(startingPosition, startingRotation));
+
+        double max;
+
         waitForStart();
 
         elapsedTime.reset();
 
         while (opModeIsActive()) {
-            double max;
+            localizer.loop();
 
             prevGamepad1.copy(currGamepad1);
             prevGamepad2.copy(currGamepad2);
@@ -81,24 +97,20 @@ public class TeleopOpMode extends LinearOpMode {
             currGamepad2.copy(gamepad2);
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
-            double drive = -currGamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+            double drive = -currGamepad1.left_stick_y;
             double strafe = gamepad1.left_stick_x;
             double yaw = currGamepad1.right_stick_x;
             double vertical = -currGamepad2.left_stick_y;
             double horizontal = currGamepad2.right_stick_x;
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
-            // Set up a variable for each drive wheel to save the power level for telemetry.
             double fr = (drive - strafe - yaw) * Math.abs(drive - strafe - yaw);
             double fl = (drive + strafe + yaw) * Math.abs(drive + strafe + yaw);
             double br = (drive + strafe - yaw) * Math.abs(drive + strafe - yaw);
             double bl = (drive - strafe + yaw) * Math.abs(drive - strafe + yaw);
 
             // Normalize the values so no wheel power exceeds 100%
-            // This ensures that the robot maintains the desired motion.
-            max = Math.max(Math.abs(fl), Math.abs(fr));
-            max = Math.max(max, Math.abs(bl));
-            max = Math.max(max, Math.abs(br));
+            max = Math.max(Math.max(Math.max(Math.abs(fl), Math.abs(fr)), Math.abs(bl)), Math.abs(br));
 
             if (max > 1.0) {
                 fl /= max;
@@ -233,6 +245,7 @@ public class TeleopOpMode extends LinearOpMode {
             telemetry.addData("Linear Slide Vertical Left Position", ports.lsv_l.getCurrentPosition());
             telemetry.addData("Linear Slide Horizontal Right Position", ports.lsh_r.getCurrentPosition());
             telemetry.addData("Linear Slide Horizontal Left Position", ports.lsh_l.getCurrentPosition());
+            telemetry.addData("Location", localizer.getRobotPosition());
             Telem.update(this);
 
             elapsedTime.reset();
