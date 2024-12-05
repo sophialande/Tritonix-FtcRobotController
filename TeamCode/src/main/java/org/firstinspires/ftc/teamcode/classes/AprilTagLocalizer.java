@@ -57,7 +57,6 @@ public class AprilTagLocalizer {
             aprilLocusStack.push(aprilTagDetection.robotPose);
             timeLastDetection.reset();
         }
-        dashboardTelemetry.update();
         if (timeLastDetection.seconds() >= 0.25) {
             aprilLocusStack.clear();
         }
