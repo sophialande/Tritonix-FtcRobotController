@@ -55,12 +55,12 @@ public class Localization {
                     0, 0, aprilTagRot.getAcquisitionTime()));
             mecanumPositionEstimate = robotPosition;
         } else {
-            mecanumPositionEstimate = new Pose3D(mecanumPositionEstimate.getPosition(), new YawPitchRollAngles(AngleUnit.DEGREES, mecanumPositionEstimate.getOrientation().getYaw() + mecanumVelocityEstimate.getOrientation().getYaw()*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(), 0, 0, 0));
+            mecanumPositionEstimate = new Pose3D(robotPosition.getPosition(), new YawPitchRollAngles(AngleUnit.DEGREES, robotPosition.getOrientation().getYaw() + mecanumVelocityEstimate.getOrientation().getYaw()*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(), 0, 0, 0));
             radianYaw = Math.toRadians(-mecanumPositionEstimate.getOrientation().getYaw());
             mecanumPositionEstimate = new Pose3D(new Position(DistanceUnit.INCH,
-                    mecanumPositionEstimate.getPosition().x+(mecanumVelocityEstimate.getPosition().x*Math.cos(radianYaw)-mecanumVelocityEstimate.getPosition().y*Math.sin(radianYaw))*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(),
-                    mecanumPositionEstimate.getPosition().y+(mecanumVelocityEstimate.getPosition().x*Math.sin(radianYaw)+mecanumVelocityEstimate.getPosition().y*Math.cos(radianYaw))*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(),
-                    0, 0), mecanumPositionEstimate.getOrientation());
+                    robotPosition.getPosition().x+(mecanumVelocityEstimate.getPosition().x*Math.cos(radianYaw)-mecanumVelocityEstimate.getPosition().y*Math.sin(radianYaw))*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(),
+                    robotPosition.getPosition().y+(mecanumVelocityEstimate.getPosition().x*Math.sin(radianYaw)+mecanumVelocityEstimate.getPosition().y*Math.cos(radianYaw))*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(),
+                    0, 0), robotPosition.getOrientation());
             robotPosition = mecanumPositionEstimate;
         }
     }

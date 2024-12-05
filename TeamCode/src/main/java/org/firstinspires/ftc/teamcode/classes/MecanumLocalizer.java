@@ -33,6 +33,7 @@ public class MecanumLocalizer {
 
     public MecanumLocalizer(Ports ports) {
         this.ports = ports;
+        elapsedTime = new ElapsedTime();
     }
 
     public Pose3D loop() {

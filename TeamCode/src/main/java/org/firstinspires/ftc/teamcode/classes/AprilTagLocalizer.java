@@ -29,7 +29,6 @@ public class AprilTagLocalizer {
     CircularStack<Pose3D> aprilLocusStack;
     ElapsedTime timeLastDetection;
 
-
     double xPos = 0; double yPos = 0; double zPos = 0; double pitch = 0; double yaw = 0; double roll = 0;
 
     public AprilTagLocalizer (LinearOpMode opMode) {
@@ -44,7 +43,7 @@ public class AprilTagLocalizer {
         dashboardTelemetry = FtcDashboard.getInstance().getTelemetry();
 
         aprilLocusStack = new CircularStack<>(5);
-        timeLastDetection.reset();
+        timeLastDetection = new ElapsedTime();
 
         FtcDashboard.getInstance().startCameraStream(myVisionPortal, 30);
     }
