@@ -12,9 +12,12 @@ public class Movement {
 
     static double rotations;
 
-
-
     public static void left(double distance, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
         rotations = distance * 21.74;
         // SET TARGET POSITION
@@ -43,6 +46,11 @@ public class Movement {
      * Describe this function...
      */
     public static void forward(int distance, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
         rotations = distance * 21.74;
         // SET TARGET POSITION
@@ -72,6 +80,11 @@ public class Movement {
      * Describe this function...
      */
     public static void backward(double distance, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
         rotations = distance * 21.74;
         // SET TARGET POSITION
@@ -100,6 +113,11 @@ public class Movement {
      * Describe this function...
      */
     public static void right(double distance, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
         rotations = distance * 21.74;
         // SET TARGET POSITION
@@ -150,6 +168,12 @@ public class Movement {
 
     //rotation right
     public static void rotationRight(double degrees, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
         reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
         rotations = degrees * 14;
         // SET TARGET POSITION
@@ -175,6 +199,12 @@ public class Movement {
     }
 
     public static void rotationLeft(double degrees, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
         reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
         rotations = degrees * 14;
         // SET TARGET POSITION

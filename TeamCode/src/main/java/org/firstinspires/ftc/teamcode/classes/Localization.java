@@ -26,6 +26,8 @@ public class Localization {
 
     double radianYaw;
 
+    public static Pose3D cameraRelativePos;
+
     public Localization(LinearOpMode opMode, Ports ports, Pose3D startingPosition) {
         robotPosition = startingPosition;
         this.ports = ports;
@@ -38,21 +40,21 @@ public class Localization {
     }
 
     public void loop() {
-        aprilTagEstimate = aprilTagLocalizer.run();
-        aprilTagPos = aprilTagEstimate.getPosition();
-        aprilTagRot = aprilTagEstimate.getOrientation();
+//        aprilTagEstimate = aprilTagLocalizer.run();
+//        aprilTagPos = aprilTagEstimate.getPosition();
+//        aprilTagRot = aprilTagEstimate.getOrientation();
 
         mecanumVelocityEstimate = mecanumLocalizer.loop();
 
-        if (!(aprilTagPos.x == 0 && aprilTagPos.y == 0 && aprilTagPos.z == 0 && aprilTagRot.getRoll() == 0)){
-            robotPosition = new Pose3D(new Position(DistanceUnit.INCH,
-                    aprilTagPos.x,
-                    aprilTagPos.y,
-                    0, aprilTagPos.acquisitionTime), new YawPitchRollAngles(AngleUnit.DEGREES,
-                    aprilTagRot.getYaw(),
-                    0, 0, aprilTagRot.getAcquisitionTime()));
-            mecanumPositionEstimate = robotPosition;
-        } else {
+//        if (!(aprilTagPos.x == 0 && aprilTagPos.y == 0 && aprilTagPos.z == 0 && aprilTagRot.getRoll() == 0)){
+//            robotPosition = new Pose3D(new Position(DistanceUnit.INCH,
+//                    aprilTagPos.x - cameraRelativePos.getPosition().x,
+//                    aprilTagPos.y - cameraRelativePos.getPosition().y,
+//                    0, aprilTagPos.acquisitionTime), new YawPitchRollAngles(AngleUnit.DEGREES,
+//                    aprilTagRot.getYaw() - cameraRelativePos.getOrientation().getYaw(),
+//                    0, 0, aprilTagRot.getAcquisitionTime()));
+//            mecanumPositionEstimate = robotPosition;
+//        } else {
             mecanumPositionEstimate = new Pose3D(robotPosition.getPosition(), new YawPitchRollAngles(AngleUnit.DEGREES, robotPosition.getOrientation().getYaw() + mecanumVelocityEstimate.getOrientation().getYaw()*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(), 0, 0, 0));
             radianYaw = Math.toRadians(-mecanumPositionEstimate.getOrientation().getYaw());
             mecanumPositionEstimate = new Pose3D(new Position(DistanceUnit.INCH,
@@ -60,7 +62,7 @@ public class Localization {
                     robotPosition.getPosition().y+(mecanumVelocityEstimate.getPosition().x*Math.sin(radianYaw)+mecanumVelocityEstimate.getPosition().y*Math.cos(radianYaw))*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(),
                     0, 0), robotPosition.getOrientation());
             robotPosition = mecanumPositionEstimate;
-        }
+//        }
     }
 
 }

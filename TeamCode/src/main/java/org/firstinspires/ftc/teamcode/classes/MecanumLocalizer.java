@@ -37,7 +37,7 @@ public class MecanumLocalizer {
     }
 
     public Pose3D loop() {
-        if (elapsedTime.seconds() < 0.25) {
+//        if (elapsedTime.seconds() < 0.25) {
 
             prevfr = currfr;
             prevfl = currfl;
@@ -65,10 +65,10 @@ public class MecanumLocalizer {
 
             return out;
 
-        } else {
-            Pose3D out = new Pose3D(new Position(DistanceUnit.INCH, 0, 0, 0, elapsedTime.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES, 0,0,0, elapsedTime.time(TimeUnit.SECONDS)));
-            elapsedTime.reset();
-            return out;
-        }
+//        } else {
+//            Pose3D out = new Pose3D(new Position(DistanceUnit.INCH, 0, 0, 0, elapsedTime.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES, 0,0,0, elapsedTime.time(TimeUnit.SECONDS)));
+//            elapsedTime.reset();
+//            return out;
+//        }
     }
 }

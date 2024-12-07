@@ -8,6 +8,22 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import static org.firstinspires.ftc.teamcode.hardware.Ports.*;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.classes.Localization;
+import org.firstinspires.ftc.teamcode.classes.PIDController;
+import org.firstinspires.ftc.teamcode.hardware.Ports;
+import org.firstinspires.ftc.teamcode.hardware.Telem;
 
 /*
  * USAGE GUIDE:
@@ -276,7 +292,7 @@ public class Driver {
 
     }
 
-    public static void claw(Ports ports, double position) {
+    public static void intakeClaw(Ports ports, double position) {
         ports.intakeClaw.getController().setServoPosition(0, position);
     }
 
@@ -322,5 +338,14 @@ public class Driver {
             ports.lsv_r.setPower(0);
             ports.lsv_l.setPower(0);
         }
+    }
+
+    public static void outtakeClawUp(Ports ports) {
+        ports.outtakePitchL.setPosition(1); // switch this pos if this isn't working
+        ports.outtakePitchR.setPosition(0);
+    }
+
+    public static void outtakeClaw(Ports ports, double position) {
+        ports.intakeClaw.getController().setServoPosition(0, position);
     }
 }

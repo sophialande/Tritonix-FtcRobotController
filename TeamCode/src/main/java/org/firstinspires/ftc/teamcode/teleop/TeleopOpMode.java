@@ -40,6 +40,7 @@ public class TeleopOpMode extends LinearOpMode {
     PIDController lsv_rController;
 
     Localization localizer;
+    int maxExtension = 4330;
 
     public static Position startingPosition = new Position(DistanceUnit.INCH, 0, 0, 0, 0);
     public static YawPitchRollAngles startingRotation = new YawPitchRollAngles(AngleUnit.DEGREES, 0, 0, 0, 0);
@@ -70,6 +71,7 @@ public class TeleopOpMode extends LinearOpMode {
         ports.lsv_l.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ports.lsh_r.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ports.lsh_l.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         lsv_lController = new PIDController(0.0127, 0.0004, 0.000001, 0.06, 20, ports.lsv_l);
         lsv_rController = new PIDController(0.0127, 0.0004, 0.000001, 0.06, 20, ports.lsv_r);
@@ -143,9 +145,33 @@ public class TeleopOpMode extends LinearOpMode {
             }
             // FLIPS THE OUTTAKE CLAW OVER THE ROBOT FROM OUTSIDE TO INSIDE
             if(currGamepad2.dpad_up){
+                ports.outtakePitchL.setPosition(0);
+                ports.outtakePitchR.setPosition(0);
+                sleep(450);
+                ports.outtakePitchL.setPosition(0.25);
+                ports.outtakePitchR.setPosition(0.75);
+                sleep(450);
+                ports.outtakePitchL.setPosition(0.75);
+                ports.outtakePitchR.setPosition(0.25);
+                sleep(450);
+                ports.outtakePitchL.setPosition(0.9);
+                ports.outtakePitchR.setPosition(0.1);
+                sleep(450);
                 ports.outtakePitchL.setPosition(1);
                 ports.outtakePitchR.setPosition(0);
             } else if(currGamepad2.dpad_down){
+                ports.outtakePitchL.setPosition(0);
+                ports.outtakePitchR.setPosition(0);
+                sleep(450);
+                ports.outtakePitchL.setPosition(0.75);
+                ports.outtakePitchR.setPosition(0.25);
+                sleep(450);
+                ports.outtakePitchL.setPosition(0.25);
+                ports.outtakePitchR.setPosition(0.75);
+                sleep(450);
+                ports.outtakePitchL.setPosition(0.1);
+                ports.outtakePitchR.setPosition(0.9);
+                sleep(450);
                 ports.outtakePitchL.setPosition(0);
                 ports.outtakePitchR.setPosition(1);
             }
@@ -158,21 +184,23 @@ public class TeleopOpMode extends LinearOpMode {
             // open and closes intake claw
             if(currGamepad2.x && !prevGamepad2.x){
                 if(intakeInverse) {
-                    ports.intakeClaw.setPosition(0.85); // open
+                    ports.intakeClaw.setPosition(0.85); // closed
                     intakeInverse = false;
                 } else {
-                    ports.intakeClaw.setPosition(0.05); // closed
+                    ports.intakeClaw.setPosition(0.05); // open
                 }
             }
             // rotates intake claw up and down
             if(currGamepad2.a && !prevGamepad2.a){
                 if(intakeInverse){
-                    ports.intakePitch.setPosition(0.4);
+                    ports.intakePitch.setPosition(0); // fully down
                     intakeInverse = false;
                 } else {
-                    ports.intakePitch.setPosition(0.1);
+                    ports.intakePitch.setPosition(0.4); // inside, perpendicular to outtake claw
+                    ports.intakeClaw.setPosition(0.78); // slightly opens intake claw so that it's ready for handoff
                 }
             }
+
             // horizontal rotates intake claw
             if(currGamepad2.b) {
                 if(intakeInverse){
@@ -181,6 +209,67 @@ public class TeleopOpMode extends LinearOpMode {
                     ports.intakeRoll.setPosition(ports.intakeRoll.getPosition() - elapsedTime.seconds());
                 }
             }
+
+            // move horizontal slides to the right position for handoff
+            if(currGamepad2.right_bumper) {
+                ports.lsh_l.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                ports.lsh_r.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                ports.lsh_l.setTargetPosition(460);
+                ports.lsh_r.setTargetPosition(460);
+
+                ports.lsh_l.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                ports.lsh_r.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                ports.lsh_l.setPower(1);
+                ports.lsh_r.setPower(1);
+            }
+
+
+            // PRESET POSITIONS
+            // high bar
+//            if(currGamepad1.y) {
+//                lsv_lController.runTo(1600);
+//                lsv_rController.runTo(1600);
+//            }
+//            // clip bar (moves down and moves away slightly)
+//            if(currGamepad1.a) {
+//                lsv_lController.runTo(1385);
+//                lsv_rController.runTo(1385);
+//
+//                // move robot away slightly from the thing
+//                ports.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                ports.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                ports.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//                ports.fl.setTargetPosition(0);
+//                ports.fl.setTargetPosition(0);
+//                ports.fl.setTargetPosition(0);
+//                ports.fl.setTargetPosition(0);
+//
+//                ports.fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                ports.bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                ports.fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                ports.br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//                ports.fl.setPower(0);
+//                ports.fr.setPower(0);
+//                ports.bl.setPower(0);
+//                ports.br.setPower(0);
+//
+//                ports.fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                ports.bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                ports.fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                ports.br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//            }
+//            // high basket
+//            if(currGamepad1.b){
+//                lsv_lController.runTo(3500);
+//                lsv_rController.runTo(3500);
+//            }
+//
             /* HANDOFF ROUTINE:
              *
              * 1. intakeClaw -> 0.05 & outtakeClaw -> 0.15 & intakePitch -> 0.4 & outtakePitch -> 0 & horizontalSlides -> 1700 if horizontalSlides < 1700 & verticalSlides -> 0
@@ -188,48 +277,59 @@ public class TeleopOpMode extends LinearOpMode {
              * 3. outtakeClaw -> 0.25 & intakeClaw -> 0.03
              * 4. horizontalSlides -> 1300
              */
-            if(currGamepad1.dpad_right && !prevGamepad1.dpad_right) {
-                handoffStep = 1;
-                lsv_lController.setup(-ports.lsv_l.getCurrentPosition());
-                lsv_rController.setup(-ports.lsv_r.getCurrentPosition());
-            }
-            if(handoffStep == 1){
-                // set claw to closed
-                ports.intakeClaw.setPosition(0.85);
-                // set intake claw open
-                ports.outtakeClaw.setPosition(0.15);
-                telemetry.addLine("set intake claw closed, set outtake claw open");
-                telemetry.update();
-                sleep(5000);
-                // bring intake claw up and over
-                ports.intakePitch.setPosition(0.4);
-                // bring outtake claw up and over
-                ports.outtakePitchL.setPosition(0);
-                ports.outtakePitchR.setPosition(1);
-                telemetry.addLine("set intake claw up and over, set outtake claw up and over");
-                telemetry.update();
-                sleep(5000);
-                // bring slides out enough so that the incoming claw doesn't bash them
-                if(ports.lsh_l.getCurrentPosition() < 1700 || ports.lsh_r.getCurrentPosition() < 1700){
-                    sleep(5000);
-                    ports.lsh_l.setPower(1);
-                    ports.lsh_r.setPower(1);
-                } else {
-                    sleep(5000);
-                    ports.lsh_l.setPower(0);
-                    ports.lsh_r.setPower(0);
-                }
-                // bring linear slides down
-                sleep(5000);
-                ports.lsv_l.setPower(lsv_lController.evaluate(-ports.lsv_l.getCurrentPosition()));
-                ports.lsv_r.setPower(lsv_rController.evaluate(-ports.lsv_r.getCurrentPosition()));
-                sleep(5000);
-                // begin handoff setup 2
-                if((ports.lsv_l.getCurrentPosition() < 20 || ports.lsv_r.getCurrentPosition() < 20) && (ports.lsh_l.getCurrentPosition() < 1700 || ports.lsh_r.getCurrentPosition() < 1700)){
-                    handoffStep = 2;
-                    telemetry.addLine("here now 1!");
-                }
-            }
+
+
+//
+//            if(currGamepad1.dpad_right && !prevGamepad1.dpad_right) {
+//                handoffStep = 1;
+//                lsv_lController.setup(-ports.lsv_l.getCurrentPosition());
+//                lsv_rController.setup(-ports.lsv_r.getCurrentPosition());
+//            }
+//            if(handoffStep == 1){
+//                // set claw to closed
+//                ports.intakeClaw.setPosition(0.85);
+//                // set intake claw open
+//                ports.outtakeClaw.setPosition(0.15);
+//                telemetry.addLine("set intake claw closed, set outtake claw open");
+//                telemetry.update();
+//                sleep(500);
+//                //bring horizontal slides out a bit
+//                ports.lsh_l.setPower(1);
+//                ports.lsh_r.setPower(1);
+//                sleep(200);
+//                ports.lsh_l.setPower(0);
+//                ports.lsh_r.setPower(0);
+//                // bring intake claw up and over, loosen intake claw slightly
+//                ports.intakePitch.setPosition(0.4);
+//                ports.intakeClaw.setPosition(0.78);
+//                sleep(5000);
+//                // bring slides out enough so that the incoming claw doesn't bash them
+//                if(ports.lsh_l.getCurrentPosition() < 1700 || ports.lsh_r.getCurrentPosition() < 1700){
+//                    sleep(5000);
+//                    ports.lsh_l.setPower(1);
+//                    ports.lsh_r.setPower(1);
+//                } else {
+//                    sleep(5000);
+//                    ports.lsh_l.setPower(0);
+//                    ports.lsh_r.setPower(0);
+//                }
+//                // bring linear slides down
+//                //sleep(5000);
+//                ports.lsv_l.setPower(lsv_lController.evaluate(-ports.lsv_l.getCurrentPosition()));
+//                ports.lsv_r.setPower(lsv_rController.evaluate(-ports.lsv_r.getCurrentPosition()));
+//                sleep(5000);
+//                // bring outtake claw up and over
+//                ports.outtakePitchL.setPosition(0);
+//                ports.outtakePitchR.setPosition(1);
+//                telemetry.addLine("set intake claw up and over, set outtake claw up and over");
+//                telemetry.update();
+//                sleep(5000);
+//                // begin handoff setup 2
+//                if((ports.lsv_l.getCurrentPosition() < 20 || ports.lsv_r.getCurrentPosition() < 20) && (ports.lsh_l.getCurrentPosition() < 1700 || ports.lsh_r.getCurrentPosition() < 1700)){
+//                    handoffStep = 2;
+//                    telemetry.addLine("here now 1!");
+//                }
+//            }
 //            if(handoffStep == 2){
 //                telemetry.addLine("here now 2!");
 //                // slightly widen intake claw so it's ready to hand the specimen off to the outtake claw
@@ -281,6 +381,7 @@ public class TeleopOpMode extends LinearOpMode {
             telemetry.addData("Back Right Pow", ports.br.getPower());
             telemetry.addData("Intake Claw Position", ports.intakeClaw.getPosition());
             telemetry.addData("Outtake Claw Position", ports.outtakeClaw.getPosition());
+            telemetry.addData("Intake Claw rotation", ports.intakePitch.getPosition());
             telemetry.addData("Linear Slide Vertical Right Position", ports.lsv_r.getCurrentPosition());
             telemetry.addData("Linear Slide Vertical Left Position", ports.lsv_l.getCurrentPosition());
             telemetry.addData("Linear Slide Horizontal Right Position", ports.lsh_r.getCurrentPosition());
