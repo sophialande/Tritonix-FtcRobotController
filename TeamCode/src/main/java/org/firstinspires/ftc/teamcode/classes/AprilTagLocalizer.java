@@ -57,9 +57,7 @@ public class AprilTagLocalizer {
             aprilLocusStack.push(aprilTagDetection.robotPose);
             timeLastDetection.reset();
         }
-        if (timeLastDetection.seconds() >= 0.25) {
-            aprilLocusStack.clear();
-        }
+
         if (!aprilLocusStack.isEmpty()) {
             List<Pose3D> sumList = aprilLocusStack.grab();
             xPos = 0; yPos = 0; zPos = 0; pitch = 0; yaw = 0; roll = 0;

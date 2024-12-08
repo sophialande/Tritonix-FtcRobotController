@@ -27,12 +27,14 @@ public class Localization {
     double radianYaw;
 
     public static Pose3D cameraRelativePos;
+    LinearOpMode opMode;
 
     public Localization(LinearOpMode opMode, Ports ports, Pose3D startingPosition) {
         robotPosition = startingPosition;
         this.ports = ports;
         aprilTagLocalizer = new AprilTagLocalizer(opMode);
-        mecanumLocalizer = new MecanumLocalizer(ports);
+        mecanumLocalizer = new MecanumLocalizer(opMode, ports);
+        this.opMode = opMode;
     }
 
     public Pose3D getRobotPosition(){
@@ -55,12 +57,16 @@ public class Localization {
 //                    0, 0, aprilTagRot.getAcquisitionTime()));
 //            mecanumPositionEstimate = robotPosition;
 //        } else {
-            mecanumPositionEstimate = new Pose3D(robotPosition.getPosition(), new YawPitchRollAngles(AngleUnit.DEGREES, robotPosition.getOrientation().getYaw() + mecanumVelocityEstimate.getOrientation().getYaw()*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(), 0, 0, 0));
+        // FORMULA: X position = Robot.XCor + (Estimated.XCor*Cos(Estimated.Yaw) - Estimated.YCor*sin(Estimated.Yaw)) * aquisitionTime
+        // FORMULA: Y position = Robot.YCor + (Estimated.XCor*Sin(Estimated.Yaw) - Estimated.YCor*cos(Estimated.Yaw)) * aquisitionTime
+
+            mecanumPositionEstimate = new Pose3D(robotPosition.getPosition(), new YawPitchRollAngles(AngleUnit.DEGREES, robotPosition.getOrientation().getYaw() + (mecanumVelocityEstimate.getOrientation().getYaw() * mecanumLocalizer.motorTimeDiff)/1000, 0, 0, 0));
             radianYaw = Math.toRadians(-mecanumPositionEstimate.getOrientation().getYaw());
             mecanumPositionEstimate = new Pose3D(new Position(DistanceUnit.INCH,
-                    robotPosition.getPosition().x+(mecanumVelocityEstimate.getPosition().x*Math.cos(radianYaw)-mecanumVelocityEstimate.getPosition().y*Math.sin(radianYaw))*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(),
-                    robotPosition.getPosition().y+(mecanumVelocityEstimate.getPosition().x*Math.sin(radianYaw)+mecanumVelocityEstimate.getPosition().y*Math.cos(radianYaw))*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(),
-                    0, 0), robotPosition.getOrientation());
+                    robotPosition.getPosition().x+((mecanumVelocityEstimate.getPosition().x*Math.cos(radianYaw)-mecanumVelocityEstimate.getPosition().y*Math.sin(radianYaw)) * mecanumLocalizer.motorTimeDiff)/1000,//*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(),
+                    robotPosition.getPosition().y+((mecanumVelocityEstimate.getPosition().x*Math.sin(radianYaw)+mecanumVelocityEstimate.getPosition().y*Math.cos(radianYaw)) * mecanumLocalizer.motorTimeDiff)/1000,//*mecanumVelocityEstimate.getOrientation().getAcquisitionTime(),
+                    0, 0), mecanumPositionEstimate.getOrientation());
+            opMode.telemetry.addData("position", mecanumPositionEstimate);
             robotPosition = mecanumPositionEstimate;
 //        }
     }

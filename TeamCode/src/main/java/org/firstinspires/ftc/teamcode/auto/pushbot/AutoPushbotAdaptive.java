@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.classes.PIDController;
 import org.firstinspires.ftc.teamcode.hardware.Driver;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
 
@@ -27,7 +28,7 @@ import org.firstinspires.ftc.teamcode.hardware.Ports;
 
 //Create an opmode class
 @Config
-@Autonomous(name="noah auto pushbot adaptive")
+@Autonomous(name="Auto Pushbot Adaptive")
 public class AutoPushbotAdaptive extends LinearOpMode {
 
     // this gamepad object will measure the current gamepad state
@@ -76,11 +77,24 @@ public class AutoPushbotAdaptive extends LinearOpMode {
     Ports ports;
     Ports.Builder builder;
 
+    PIDController lsv_lController;
+    PIDController lsv_rController;
+
+    // CONTROL FUNCTIONS FOR DASHBOARD
+    public static int delayNum; // 0 = 0, 3 = 3, 5 = 5
+    public static int teamColor;
+    public static int parkVsHang;
+    public static int startingPos;
+
+
+
     //Create the opmode function
     @Override
     public void runOpMode(){
         //initialize
+        builder = new Ports.Builder();
         builder.wheelsActive = true;
+        builder.servosActive = true;
         ports = new Ports(this, builder);
 
         ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -97,78 +111,121 @@ public class AutoPushbotAdaptive extends LinearOpMode {
 
         // init the starting pos var as null
         startingPosition = null;
+        allianceColor = null;
+        scoringVersion = null;
+
+        lsv_lController = new PIDController(0.0127, 0.0004, 0.000001, 0.06, 20, ports.lsv_l);
+        lsv_rController = new PIDController(0.0127, 0.0004, 0.000001, 0.06, 20, ports.lsv_r);
+
 
         // This loop will only end once the op mode has been configured or when it's been stopped
-        while(!isStopRequested() && !isConfigured && !delaySet){
-
-            // Set the value of prevGamepad1 to the value of from the previous loop
-            prevGamepad1.copy(currentGamepad1);
-
-            // Set the value of currentGamepad1 to the current state of the gamepad
-            currentGamepad1.copy(gamepad1);
-
-            telemetry.addLine("CONFIGURE AUTONOMOUS");
-            telemetry.addLine("--------------------");
-            telemetry.addLine("");
-
-            // If there isn't a starting position, as for one to be inputted and record it
-            if(startingPosition == null){
-                telemetry.addLine("Select a starting position:");
-                telemetry.addLine("Press (X/□) for LEFT, (B/○) for RIGHT");
-
-                // if the x key has been pressed, set the position as left
-                if(currentGamepad1.x && !prevGamepad1.x){
-                    startingPosition = StartingPosition.LEFT;
-                } else if (currentGamepad1.b && !prevGamepad1.b) {
-                    startingPosition = StartingPosition.RIGHT;
-                }
-            }
-            if(allianceColor == null && startingPosition != null){
-                telemetry.addLine("Select your alliance color:");
-                telemetry.addLine("Press (X/□) for BLUE, (B/○) for RED");
-
-                // if the x key has been pressed, set the color to be blue
-                if(currentGamepad1.x && !prevGamepad1.x){
-                    allianceColor = AllianceColor.BLUE;
-                } else if (currentGamepad1.b && !prevGamepad1.b) {
-                    allianceColor = AllianceColor.RED;
-                }
-            }
-            if(scoringVersion == null && allianceColor != null && startingPosition != null){
-                telemetry.addLine("Select the version of scoring:");
-                telemetry.addLine("Press (X/□) for PARK ONLY, (B/○) for HANG SPECIMEN AND PARK");
-
-                // if the x key has been pressed, set the color to be blue
-                if(currentGamepad1.x && !prevGamepad1.x){
-                    scoringVersion = ScoringVersion.PARK;
-                } else if (currentGamepad1.b && !prevGamepad1.b) {
-                    scoringVersion = ScoringVersion.HANG;
-                }
-            }
-
-            if(delaySet == false && scoringVersion != null && allianceColor != null && startingPosition != null){
-                telemetry.addLine("Select how long to wait before beginning autonomous:");
-                telemetry.addLine("Press (X/□) for 0 SECONDS, (Y/triangle) for 3 SECONDS, OR (B/○) for 5 SECONDS");
-
-                // if the x key has been pressed, set the color to be blue
-                if(currentGamepad1.x && !prevGamepad1.x){
-                    delay = 0;
-                    delaySet = true;
-                }
-                if (currentGamepad1.y && !prevGamepad1.y){
-                    delay = 3;
-                    delaySet = true;
-                } else if (currentGamepad1.b && !prevGamepad1.b) {
-                    delay = 5;
-                    delaySet = true;
-                }
-            }
-            if (startingPosition != null && allianceColor != null && scoringVersion != null && delaySet != false){
-                // If opmode has been configured
-                isConfigured = true;
-            }
-            telemetry.update();
 //
+//        while(!isStopRequested() && !isConfigured && !delaySet){
+//
+//            // Set the value of prevGamepad1 to the value of from the previous loop
+//            prevGamepad1.copy(currentGamepad1);
+//
+//            // Set the value of currentGamepad1 to the current state of the gamepad
+//            currentGamepad1.copy(gamepad1);
+//
+//            telemetry.addLine("CONFIGURE AUTONOMOUS");
+//            telemetry.addLine("--------------------");
+//            telemetry.addLine("");
+//
+//            // If there isn't a starting position, as for one to be inputted and record it
+//            if(startingPosition == null){
+//                telemetry.addLine("Select a starting position");
+//                telemetry.addLine("Press (X/□) for LEFT, (B/○) for RIGHT");
+//
+//                // if the x key has been pressed, set the position as left
+//                if(currentGamepad1.x && !prevGamepad1.x){
+//                    startingPosition = StartingPosition.LEFT;
+//                } else if (currentGamepad1.b && !prevGamepad1.b) {
+//                    startingPosition = StartingPosition.RIGHT;
+//                }
+//            } else{
+//                // If there is a starting position, say that the opmode has been configured
+//                isConfigured = true;
+//            }
+//            telemetry.update();
+//
+
+//        while(!isStopRequested() && !isConfigured && !delaySet){
+//            telemetry.addLine("hi");
+//            telemetry.update();
+//
+//            // Set the value of prevGamepad1 to the value of from the previous loop
+//            prevGamepad1.copy(currentGamepad1);
+//
+//            // Set the value of currentGamepad1 to the current state of the gamepad
+//            currentGamepad1.copy(gamepad1);
+//
+//            telemetry.addLine("CONFIGURE AUTONOMOUS");
+//            telemetry.addLine("--------------------");
+//            telemetry.addLine("");
+//
+//            // If there isn't a starting position, as for one to be inputted and record it
+//            if(startingPosition == null){
+//                telemetry.addLine("Select a starting position:");
+//                telemetry.addLine("Press (X/□) for LEFT, (B/○) for RIGHT");
+//
+//                // if the x key has been pressed, set the position as left
+//                if(currentGamepad1.x && !prevGamepad1.x){
+//                    startingPosition = StartingPosition.LEFT;
+//                } else if (currentGamepad1.b && !prevGamepad1.b) {
+//                    startingPosition = StartingPosition.RIGHT;
+//                }
+//                telemetry.update();
+//            }
+//            if(allianceColor == null && startingPosition != null){
+//                telemetry.addLine("Select your alliance color:");
+//                telemetry.addLine("Press (X/□) for BLUE, (B/○) for RED");
+//
+//                // if the x key has been pressed, set the color to be blue
+//                if(currentGamepad1.x && !prevGamepad1.x){
+//                    allianceColor = AllianceColor.BLUE;
+//                } else if (currentGamepad1.b && !prevGamepad1.b) {
+//                    allianceColor = AllianceColor.RED;
+//                }
+//                telemetry.update();
+//            }
+//            if(scoringVersion == null && allianceColor != null && startingPosition != null){
+//                telemetry.addLine("Select the version of scoring:");
+//                telemetry.addLine("Press (X/□) for PARK ONLY, (B/○) for HANG SPECIMEN AND PARK");
+//
+//                // if the x key has been pressed, set the color to be blue
+//                if(currentGamepad1.x && !prevGamepad1.x){
+//                    scoringVersion = ScoringVersion.PARK;
+//                } else if (currentGamepad1.b && !prevGamepad1.b) {
+//                    scoringVersion = ScoringVersion.HANG;
+//                }
+//                telemetry.update();
+//            }
+//
+//            if(delaySet == false && scoringVersion != null && allianceColor != null && startingPosition != null){
+//                telemetry.addLine("Select how long to wait before beginning autonomous:");
+//                telemetry.addLine("Press (X/□) for 0 SECONDS, (Y/triangle) for 3 SECONDS, OR (B/○) for 5 SECONDS");
+//
+//                // if the x key has been pressed, set the color to be blue
+//                if(currentGamepad1.x && !prevGamepad1.x){
+//                    delay = 0;
+//                    delaySet = true;
+//                }
+//                if (currentGamepad1.y && !prevGamepad1.y){
+//                    delay = 3;
+//                    delaySet = true;
+//                } else if (currentGamepad1.b && !prevGamepad1.b) {
+//                    delay = 5;
+//                    delaySet = true;
+//                }
+//                telemetry.update();
+//            }
+//            if (startingPosition != null && allianceColor != null && scoringVersion != null && delaySet != false){
+//                // If opmode has been configured
+//                isConfigured = true;
+//            }
+//            telemetry.update();
+////
 //            if(!delaySet && isConfigured) {
 //                telemetry.addLine("DELAY SETTING");
 //                telemetry.addLine("-------------");
@@ -190,81 +247,136 @@ public class AutoPushbotAdaptive extends LinearOpMode {
 //        }
 
         // inform the driver that the setup is complete
-        telemetry.addLine("CONFIGURATION COMPLETE");
-        telemetry.addLine("----------------------");
-        telemetry.addData("Starting Position: ", startingPosition);
-        telemetry.addData("Alliance Color: ", allianceColor);
-        telemetry.addData("Scoring version; ", scoringVersion);
-        telemetry.addData("Delay: ", delay);
-        telemetry.update();
+//        telemetry.addLine("CONFIGURATION COMPLETE");
+//        telemetry.addLine("----------------------");
+//        telemetry.addData("Starting Position: ", startingPosition);
+//        telemetry.addData("Alliance Color: ", allianceColor);
+//        telemetry.addData("Scoring version; ", scoringVersion);
+//        telemetry.addData("Delay: ", delay);
+//        telemetry.update();
 
         //wait for the game to start
-        waitForStart();
+//        waitForStart();
 
-        this.sleep((long)1000*delay);
+//        this.sleep((long)1000*delay);
 
         // BASIC VERSION, NO LOCALIZATION FUNCTIONS
-        if(allianceColor == AllianceColor.RED){
-            if(startingPosition == StartingPosition.LEFT){
-                if(scoringVersion == ScoringVersion.PARK){
-                    // Red, Left pos, only parking
-                    Driver.drive(this, ports, 2, 200, 0);
-                }
-                else if(scoringVersion == ScoringVersion.HANG){
-                    // Red, Left pos, hanging specimen, then parking
-                    continue;
-                }
-            }
-            else if(startingPosition == StartingPosition.RIGHT){
-                if(scoringVersion == ScoringVersion.PARK){
-                    // Red, Right pos, only parking
-                    Driver.drive(this, ports, 2, 85, 0);
-                }
-                else if(scoringVersion == ScoringVersion.HANG){
-                    // Red, Right pos, hanging specimen, then parking
-
-                    // STARTS WITH A SPECIMEN IN THE OUTTAKE CLAW
-//                    
+//        if(allianceColor == AllianceColor.RED){
+//            if(startingPosition == StartingPosition.LEFT){
+//                if(scoringVersion == ScoringVersion.PARK){
+//                    // Red, Left pos, only parking
+//                    telemetry.addLine("Red, Left pos, only parking");
+//                }
+//                else if(scoringVersion == ScoringVersion.HANG){
+//                    // Red, Left pos, hanging specimen, then parking
+//                    telemetry.addLine("Red, Left pos, hanging specimen, then parking");
+//                }
+//            }
+//            else if(startingPosition == StartingPosition.RIGHT){
+//                if(scoringVersion == ScoringVersion.PARK){
+//                    // Red, Right pos, only parking
+//                    telemetry.addLine("Red, right pos, only parking");
+//                }
+//                else if(scoringVersion == ScoringVersion.HANG){
+//                    // Red, Right pos, hanging specimen, then parking
 //
+//                    telemetry.addLine("Red, Right pos, hanging specimen, then parking");
 //
-//                    // HANGING SEQUENCE
-//                    Driver.intakeClaw(ports, 0);  // INTAKE CLAW -  it's either pos 0 or pos 0.85 so change if it's wrong
-//                    Driver.outtakeClaw(ports, 0.25); // OUTTAKE CLAW, pos either this or 0 to open it
+//                }
+//            }
 //
-//
-//                    Driver.drive(this, ports, 2, 85, 90);
-//                    Driver.drive(this, ports, 2, 52, 180);
-//
-//                    Driver.linearSlidesVUp(ports, 2, 1600); // if this isn't working then maybe go into driver class and change one slide motor power to be negative and one positive
-//                    Driver.outtakeClawUp(ports);
-//
-//                    Driver.linearSlidesVUp(ports, 2, 1385);
-//                    Driver.drive(this, ports, 2, 20, 270);
-//
-//                    Driver.linearSlidesVDown(ports, 2, 0);
-//                    Driver.drive(this, ports, 2, 65, 180);
-//
-//
-                }
-            }
-        }
-
-        }
-
-
-
-//        if(startingPosition == StartingPosition.LEFT){
-//            drive(this, ports, speed, 80, 0);
-//            drive(this, ports, speed, 300, 180);
-//        } else if (startingPosition == StartingPosition.RIGHT) {
-//            drive(this, ports, speed, 84.853, 45);
-//            drive(this, ports, speed, 120, 0);
-//            rotate(this, ports, speed, -45);
-//            drive(this, ports, speed, 70, 0);
-//            drive(this, ports, speed, 70, 180);
-//            rotate(this, ports, speed, 45);
-//            drive(this, ports, speed, 200, 180);
-//            drive(this, ports, speed, 70, -135);
 //        }
+
+//        }
+
+//        }
+
+
+        waitForStart();
+
+        if(teamColor==0){
+            if(startingPos==0){
+                if(parkVsHang==0){
+                    if(delayNum==0){
+                        // COLOR BLUE, POSITION LEFT, PARKING ONLY, 0 SECOND DELAY
+
+                    } else if (delayNum==3){
+                        // COLOR BLUE, POSITION LEFT, PARKING ONLY, 3 SECOND DELAY
+                        sleep(3000);
+                    } else if (delayNum==5){
+                        // COLOR BLUE, POSITION LEFT, PARKING ONLY, 5 SECOND DELAY
+                        sleep(5000);
+                    }
+                } else if (parkVsHang==1){
+                    if(delayNum==0){
+
+                    } else if (delayNum==3){
+
+                    } else if (delayNum==5){
+
+                    }
+                }
+            } else if (startingPos==1){
+                if(parkVsHang==0){
+                    if(delayNum==0){
+
+                    } else if (delayNum==3){
+
+                    } else if (delayNum==5){
+
+                    }
+                } else if (parkVsHang==1){
+                    if(delayNum==0){
+
+                    } else if (delayNum==3){
+
+                    } else if (delayNum==5){
+
+                    }
+                }
+            }
+        } else if (teamColor==1){
+            if(startingPos==0){
+                if(parkVsHang==0){
+                    if(delayNum==0){
+
+                    } else if (delayNum==3){
+
+                    } else if (delayNum==5){
+
+                    }
+                } else if (parkVsHang==1){
+                    if(delayNum==0){
+
+                    } else if (delayNum==3){
+
+                    } else if (delayNum==5){
+
+                    }
+                }
+            } else if (startingPos==1){
+                if(parkVsHang==0){
+                    if(delayNum==0){
+
+                    } else if (delayNum==3){
+
+                    } else if (delayNum==5){
+
+                    }
+                } else if (parkVsHang==1){
+                    if(delayNum==0){
+
+                    } else if (delayNum==3){
+
+                    } else if (delayNum==5){
+
+                    }
+                }
+            }
+        }
+
+        telemetry.update();
+        sleep(10000);
+
     }
 }

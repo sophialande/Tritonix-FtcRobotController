@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.classes.AprilTagLocalizer;
 import org.firstinspires.ftc.teamcode.classes.Localization;
 import org.firstinspires.ftc.teamcode.classes.PIDController;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
@@ -39,14 +40,17 @@ public class TeleopOpMode extends LinearOpMode {
     PIDController lsv_lController;
     PIDController lsv_rController;
 
-    Localization localizer;
     int maxExtension = 4330;
 
     public static Position startingPosition = new Position(DistanceUnit.INCH, 0, 0, 0, 0);
     public static YawPitchRollAngles startingRotation = new YawPitchRollAngles(AngleUnit.DEGREES, 0, 0, 0, 0);
 
+    AprilTagLocalizer aprilTagLocalizer;
+
     @Override
     public void runOpMode() {
+
+        aprilTagLocalizer = new AprilTagLocalizer(this);
 
         builder = new Ports.Builder();
         builder.wheelsActive = true;
@@ -81,8 +85,6 @@ public class TeleopOpMode extends LinearOpMode {
         currGamepad1 = new Gamepad();
         currGamepad2 = new Gamepad();
 
-        localizer = new Localization(this, ports, new Pose3D(startingPosition, startingRotation));
-
         double max;
 
         waitForStart();
@@ -90,7 +92,6 @@ public class TeleopOpMode extends LinearOpMode {
         elapsedTime.reset();
 
         while (opModeIsActive()) {
-            localizer.loop();
 
             prevGamepad1.copy(currGamepad1);
             prevGamepad2.copy(currGamepad2);
@@ -386,7 +387,7 @@ public class TeleopOpMode extends LinearOpMode {
             telemetry.addData("Linear Slide Vertical Left Position", ports.lsv_l.getCurrentPosition());
             telemetry.addData("Linear Slide Horizontal Right Position", ports.lsh_r.getCurrentPosition());
             telemetry.addData("Linear Slide Horizontal Left Position", ports.lsh_l.getCurrentPosition());
-            telemetry.addData("Location", localizer.getRobotPosition());
+            telemetry.addData("Location", aprilTagLocalizer.run());
             Telem.update(this);
 
             elapsedTime.reset();

@@ -159,6 +159,7 @@ public class Driver {
         ports.bl.setPower(0);
     }
 
+
     public static void drift(LinearOpMode opMode, Ports ports, double speed, double cm, double degrees, double rotation) {
         //Instantiate the multipliers that will control the speed of each wheel
         double frblMultiplier;
@@ -292,60 +293,81 @@ public class Driver {
 
     }
 
-    public static void intakeClaw(Ports ports, double position) {
-        ports.intakeClaw.getController().setServoPosition(0, position);
+    public static void intakeClaw(LinearOpMode opMode, Ports ports, double position) {
+        ports.intakeClaw.setPosition(position);
     }
 
-    public static void linearSlidesHUp(Ports ports, double power, double maxExtension) {
-        if (ports.lsh_r.getCurrentPosition()<maxExtension && ports.lsh_l.getCurrentPosition()<maxExtension){
-            ports.lsh_r.setPower(power);
-            ports.lsh_l.setPower(power);
-        }
-        else {
-            ports.lsh_r.setPower(0);
-            ports.lsh_l.setPower(0);
-        }
+    public static void outtakePitch(LinearOpMode opMode, Ports ports, double positionL, double positionR) {
+        ports.outtakePitchL.setPosition(positionL);
+        ports.outtakePitchR.setPosition(positionR);
     }
 
-    public static void linearSlidesHDown(Ports ports, double power, double maxExtension) {
-        if (ports.lsh_r.getCurrentPosition()>maxExtension && ports.lsh_l.getCurrentPosition()>maxExtension){
-            ports.lsh_r.setPower(power);
-            ports.lsh_l.setPower(power);
-        }
-        else {
-            ports.lsh_r.setPower(0);
-            ports.lsh_l.setPower(0);
-        }
+    public static void outtakeClaw(LinearOpMode opMode, Ports ports, double position) {
+        ports.outtakeClaw.setPosition(position);
     }
 
-    public static void linearSlidesVUp(Ports ports, double power, double maxExtension) {
-        if (ports.lsv_r.getCurrentPosition()<maxExtension && ports.lsv_l.getCurrentPosition()<maxExtension){
-            ports.lsv_r.setPower(power);
-            ports.lsv_l.setPower(power);
-        }
-        else {
-            ports.lsv_r.setPower(0);
-            ports.lsv_l.setPower(0);
-        }
+    public static void intakePitch(LinearOpMode opMode, Ports ports, double position) {
+        ports.intakePitch.setPosition(position);
     }
 
-    public static void linearSlidesVDown(Ports ports, double power, double maxExtension) {
-        if (ports.lsv_r.getCurrentPosition()>maxExtension && ports.lsv_l.getCurrentPosition()>maxExtension){
-            ports.lsv_r.setPower(power);
-            ports.lsv_l.setPower(power);
-        }
-        else {
-            ports.lsv_r.setPower(0);
-            ports.lsv_l.setPower(0);
-        }
+    public static void intakeRoll(LinearOpMode opMode, Ports ports, double position) {
+        ports.intakeRoll.setPosition(position);
     }
 
-    public static void outtakeClawUp(Ports ports) {
-        ports.outtakePitchL.setPosition(1); // switch this pos if this isn't working
-        ports.outtakePitchR.setPosition(0);
+    public static void horizontalLinearSlides(LinearOpMode opMode, Ports ports, int targetPosition, int power) {
+        ports.lsh_r.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.lsh_l.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        ports.lsh_r.setTargetPosition(targetPosition);
+        ports.lsh_l.setTargetPosition(targetPosition);
+
+        ports.lsh_r.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.lsh_l.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        ports.lsh_r.setPower(power);
+        ports.lsh_l.setPower(power);
     }
 
-    public static void outtakeClaw(Ports ports, double position) {
-        ports.intakeClaw.getController().setServoPosition(0, position);
+    public static void driveToPos(LinearOpMode opMode, Ports ports, double drive, double strafe, double yaw){
+        
+        double fr = (drive - strafe - yaw);
+        double fl = (drive + strafe + yaw);
+        double br = (drive + strafe - yaw);
+        double bl = (drive - strafe + yaw);
+        double max;
+
+        max = Math.max(Math.max(Math.max(Math.abs(fl), Math.abs(fr)), Math.abs(bl)), Math.abs(br));
+
+        if (max > 1.0) {
+            fl /= max;
+            fr /= max;
+            bl /= max;
+            br /= max;
+        }
+
+        ports.fr.setPower(fr);
+        ports.fl.setPower(fl);
+        ports.bl.setPower(bl);
+        ports.br.setPower(br);
     }
+
+
+// FUNCTION
+    // I WANT TO BE AT THESE COORDINATES
+    // called in a loop, but always inputting the same exit position
+    // outputs the power needed to go to that location
+//    public static void driveTo(Ports ports, double XPos, double YPos, double yaw) {
+//
+//        double drive = // current y and target y
+//        double strafe = // difference between current x and target x
+//        double yaw = //currGamepad1.right_stick_x;
+//        double vertical = //-currGamepad2.left_stick_y;
+//        double horizontal = //currGamepad2.right_stick_x;
+//
+//        // Combine the joystick requests for each axis-motion to determine each wheel's power.
+//        double fr = (drive - strafe - yaw) * Math.abs(drive - strafe - yaw);
+//        double fl = (drive + strafe + yaw) * Math.abs(drive + strafe + yaw);
+//        double br = (drive + strafe - yaw) * Math.abs(drive + strafe - yaw);
+//        double bl = (drive - strafe + yaw) * Math.abs(drive - strafe + yaw);
+//    }
 }

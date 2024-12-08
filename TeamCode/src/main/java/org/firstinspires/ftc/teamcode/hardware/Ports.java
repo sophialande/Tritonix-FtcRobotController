@@ -93,6 +93,7 @@ public class Ports {
              intakeRoll = opMode.hardwareMap.get(Servo.class, "intakeRoll");
          }
 
+
          //if (builder.allActive || builder.servosActive || builder.intakeClawActive) {
              //intakeClaw = opMode.hardwareMap.get(Servo.class, "intakeClaw");
          //}

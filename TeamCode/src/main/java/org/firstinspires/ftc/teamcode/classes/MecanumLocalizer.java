@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.classes;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -29,15 +30,20 @@ public class MecanumLocalizer {
     int prevbl = 0;
     int diffbl = 0;
 
+    LinearOpMode opMode;
+
     Ports ports;
 
-    public MecanumLocalizer(Ports ports) {
+    public double motorTimeDiff;
+
+    public MecanumLocalizer(LinearOpMode opMode, Ports ports) {
         this.ports = ports;
         elapsedTime = new ElapsedTime();
+        this.opMode = opMode;
     }
 
     public Pose3D loop() {
-//        if (elapsedTime.seconds() < 0.25) {
+        if (elapsedTime.seconds() < 0.25) {
 
             prevfr = currfr;
             prevfl = currfl;
@@ -59,16 +65,20 @@ public class MecanumLocalizer {
                     (double) (diffbr - difffr)/2,
                     0, elapsedTime.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES,
                     (double) (diffbl - difffr)/2,
-                    0, 0, elapsedTime.time(TimeUnit.SECONDS)));
+                    0, 0, 0));
+
+            motorTimeDiff = elapsedTime.time(TimeUnit.MILLISECONDS);
 
             elapsedTime.reset();
 
+            opMode.telemetry.addData("Velocity Estimate", out);
+
             return out;
 
-//        } else {
-//            Pose3D out = new Pose3D(new Position(DistanceUnit.INCH, 0, 0, 0, elapsedTime.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES, 0,0,0, elapsedTime.time(TimeUnit.SECONDS)));
-//            elapsedTime.reset();
-//            return out;
-//        }
+        } else {
+            Pose3D out = new Pose3D(new Position(DistanceUnit.INCH, 0, 0, 0, elapsedTime.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES, 0,0,0, elapsedTime.time(TimeUnit.SECONDS)));
+            elapsedTime.reset();
+            return out;
+        }
     }
 }
