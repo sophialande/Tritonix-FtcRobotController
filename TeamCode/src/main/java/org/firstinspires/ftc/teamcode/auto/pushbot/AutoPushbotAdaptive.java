@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.classes.Movement;
 import org.firstinspires.ftc.teamcode.classes.PIDController;
 import org.firstinspires.ftc.teamcode.hardware.Driver;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
@@ -298,6 +299,10 @@ public class AutoPushbotAdaptive extends LinearOpMode {
             if(startingPos==0){
                 if(parkVsHang==0){
                     sleep(1000*delayNum);
+                    Movement.left(this, ports, 1000, telemetry); // moves left
+                    Driver.intakeClaw(this, ports, 0.85); // opens claw
+                    Driver.intakeClaw(this, ports, 0); // closes claw
+
                 } else if (parkVsHang==1){
                     sleep(1000*delayNum);
                 }

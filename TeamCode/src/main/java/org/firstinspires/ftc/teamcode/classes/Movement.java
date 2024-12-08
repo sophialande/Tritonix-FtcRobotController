@@ -1,43 +1,45 @@
 package org.firstinspires.ftc.teamcode.classes;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.hardware.Ports;
 
 
 public class Movement {
 
     static double rotations;
 
-    public static void left(double distance, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    public static void left(LinearOpMode opMode, Ports ports, double distance, Telemetry telemetry) {
+        ports.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
+        reset_encoders(ports.bl, ports.br, ports.fl, ports.fr);
         rotations = distance * 21.74;
         // SET TARGET POSITION
-        motorFrontRight.setTargetPosition((int) rotations);
-        motorFrontLeft.setTargetPosition((int) -rotations);
-        motorBackLeft.setTargetPosition((int) rotations);
-        motorBackRight.setTargetPosition((int) -rotations);
+        ports.fr.setTargetPosition((int) rotations);
+        ports.fl.setTargetPosition((int) -rotations);
+        ports.bl.setTargetPosition((int) rotations);
+        ports.br.setTargetPosition((int) -rotations);
         // RUN TO POSITION
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        ((DcMotorEx) motorFrontRight).setVelocity(1000);
-        ((DcMotorEx) motorFrontLeft).setVelocity(-1000);
-        ((DcMotorEx) motorBackLeft).setVelocity(1000);
-        ((DcMotorEx) motorBackRight).setVelocity(-1000);
-        while (motorBackLeft.isBusy() && motorBackRight.isBusy() && motorFrontLeft.isBusy() && motorFrontRight.isBusy()) {
+        ((DcMotorEx) ports.fr).setVelocity(1000);
+        ((DcMotorEx) ports.fl).setVelocity(-1000);
+        ((DcMotorEx) ports.bl).setVelocity(1000);
+        ((DcMotorEx) ports.br).setVelocity(-1000);
+        while (ports.bl.isBusy() && ports.br.isBusy() && ports.fl.isBusy() && ports.fr.isBusy()) {
             telemetry.addData("function", "left");
-            motor_telemetry(telemetry, motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
+            //motor_telemetry(telemetry, ports.br, ports.bl, ports.fl, ports.br);
             telemetry.update();
         }
     }
@@ -45,32 +47,32 @@ public class Movement {
     /**
      * Describe this function...
      */
-    public static void forward(int distance, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    public static void forward(LinearOpMode opMode, Ports ports, double distance, Telemetry telemetry) {
+        ports.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
+        reset_encoders(ports.bl, ports.br, ports.fl, ports.fr);
         rotations = distance * 21.74;
         // SET TARGET POSITION
-        motorFrontRight.setTargetPosition((int) rotations);
-        motorFrontLeft.setTargetPosition((int) rotations);
-        motorBackLeft.setTargetPosition((int) rotations);
-        motorBackRight.setTargetPosition((int) rotations);
+        ports.fr.setTargetPosition((int) rotations);
+        ports.fl.setTargetPosition((int) rotations);
+        ports.bl.setTargetPosition((int) rotations);
+        ports.br.setTargetPosition((int) rotations);
         // RUN TO POSITION
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        ((DcMotorEx) motorFrontRight).setVelocity(1000);
-        ((DcMotorEx) motorFrontLeft).setVelocity(1000);
-        ((DcMotorEx) motorBackLeft).setVelocity(1000);
-        ((DcMotorEx) motorBackRight).setVelocity(1000);
-        while (motorBackLeft.isBusy() && motorBackRight.isBusy() && motorFrontLeft.isBusy() && motorFrontRight.isBusy()) {
+        ((DcMotorEx) ports.fr).setVelocity(1000);
+        ((DcMotorEx) ports.fl).setVelocity(1000);
+        ((DcMotorEx) ports.bl).setVelocity(1000);
+        ((DcMotorEx) ports.br).setVelocity(1000);
+        while (ports.bl.isBusy() && ports.br.isBusy() && ports.fl.isBusy() && ports.fr.isBusy()) {
             telemetry.addData("function", "forward...");
-            motor_telemetry(telemetry, motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
+            //motor_telemetry(telemetry, motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
             telemetry.update();
         }
     }
@@ -79,32 +81,32 @@ public class Movement {
     /**
      * Describe this function...
      */
-    public static void backward(double distance, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    public static void backward(LinearOpMode opMode, Ports ports, double distance, Telemetry telemetry) {
+        ports.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
+        reset_encoders(ports.bl, ports.br, ports.fl, ports.fr);
         rotations = distance * 21.74;
         // SET TARGET POSITION
-        motorFrontRight.setTargetPosition((int) -rotations);
-        motorFrontLeft.setTargetPosition((int) -rotations);
-        motorBackLeft.setTargetPosition((int) -rotations);
-        motorBackRight.setTargetPosition((int) -rotations);
+        ports.fr.setTargetPosition((int) -rotations);
+        ports.fl.setTargetPosition((int) -rotations);
+        ports.bl.setTargetPosition((int) -rotations);
+        ports.br.setTargetPosition((int) -rotations);
         // RUN TO POSITION
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        ((DcMotorEx) motorFrontRight).setVelocity(-1000);
-        ((DcMotorEx) motorFrontLeft).setVelocity(-1000);
-        ((DcMotorEx) motorBackLeft).setVelocity(-1000);
-        ((DcMotorEx) motorBackRight).setVelocity(-1000);
-        while (motorBackLeft.isBusy() && motorBackRight.isBusy() && motorFrontLeft.isBusy() && motorFrontRight.isBusy()) {
+        ((DcMotorEx) ports.fr).setVelocity(-1000);
+        ((DcMotorEx) ports.fl).setVelocity(-1000);
+        ((DcMotorEx) ports.bl).setVelocity(-1000);
+        ((DcMotorEx) ports.br).setVelocity(-1000);
+        while (ports.bl.isBusy() && ports.br.isBusy() && ports.fl.isBusy() && ports.fr.isBusy()) {
             telemetry.addData("function", "backward");
-            motor_telemetry(telemetry, motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
+            motor_telemetry(telemetry, ports.bl, ports.br, ports.fl, ports.fr);
             telemetry.update();
         }
     }
@@ -112,32 +114,32 @@ public class Movement {
     /**
      * Describe this function...
      */
-    public static void right(double distance, Telemetry telemetry, DcMotor motorBackLeft, DcMotor motorBackRight, DcMotor motorFrontLeft, DcMotor motorFrontRight) {
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    public static void right(LinearOpMode opMode, Ports ports, double distance, Telemetry telemetry) {
+        ports.bl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fl.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ports.fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        reset_encoders(motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
+        reset_encoders(ports.bl, ports.br, ports.fl, ports.fr);
         rotations = distance * 21.74;
         // SET TARGET POSITION
-        motorFrontRight.setTargetPosition((int) -rotations);
-        motorFrontLeft.setTargetPosition((int) rotations);
-        motorBackLeft.setTargetPosition((int) -rotations);
-        motorBackRight.setTargetPosition((int) rotations);
+        ports.fr.setTargetPosition((int) -rotations);
+        ports.fl.setTargetPosition((int) rotations);
+        ports.bl.setTargetPosition((int) -rotations);
+        ports.br.setTargetPosition((int) rotations);
         // RUN TO POSITION
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ports.fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        ((DcMotorEx) motorFrontRight).setVelocity(-1000);
-        ((DcMotorEx) motorFrontLeft).setVelocity(1000);
-        ((DcMotorEx) motorBackLeft).setVelocity(-1000);
-        ((DcMotorEx) motorBackRight).setVelocity(1000);
-        while (motorBackLeft.isBusy() && motorBackRight.isBusy() && motorFrontLeft.isBusy() && motorFrontRight.isBusy()) {
+        ((DcMotorEx) ports.fr).setVelocity(-1000);
+        ((DcMotorEx) ports.fl).setVelocity(1000);
+        ((DcMotorEx) ports.bl).setVelocity(-1000);
+        ((DcMotorEx) ports.br).setVelocity(1000);
+        while (ports.bl.isBusy() && ports.br.isBusy() && ports.fl.isBusy() && ports.fr.isBusy()) {
             telemetry.addData("function", "right");
-            motor_telemetry(telemetry, motorBackLeft, motorBackRight, motorFrontLeft, motorFrontRight);
+            motor_telemetry(telemetry, ports.bl, ports.br, ports.fl, ports.fr);
             telemetry.update();
         }
     }

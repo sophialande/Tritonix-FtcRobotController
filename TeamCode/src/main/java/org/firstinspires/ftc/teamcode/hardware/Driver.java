@@ -328,7 +328,7 @@ public class Driver {
         ports.lsh_l.setPower(power);
     }
 
-    public static void driveToPos(LinearOpMode opMode, Ports ports, double drive, double strafe, double yaw){
+    public static void driveToComponent(LinearOpMode opMode, Ports ports, double drive, double strafe, double yaw){
         
         double fr = (drive - strafe - yaw);
         double fl = (drive + strafe + yaw);
