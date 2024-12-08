@@ -297,80 +297,29 @@ public class AutoPushbotAdaptive extends LinearOpMode {
         if(teamColor==0){
             if(startingPos==0){
                 if(parkVsHang==0){
-                    if(delayNum==0){
-                        // COLOR BLUE, POSITION LEFT, PARKING ONLY, 0 SECOND DELAY
-
-                    } else if (delayNum==3){
-                        // COLOR BLUE, POSITION LEFT, PARKING ONLY, 3 SECOND DELAY
-                        sleep(3000);
-                    } else if (delayNum==5){
-                        // COLOR BLUE, POSITION LEFT, PARKING ONLY, 5 SECOND DELAY
-                        sleep(5000);
-                    }
+                    sleep(1000*delayNum);
                 } else if (parkVsHang==1){
-                    if(delayNum==0){
-
-                    } else if (delayNum==3){
-
-                    } else if (delayNum==5){
-
-                    }
+                    sleep(1000*delayNum);
                 }
             } else if (startingPos==1){
                 if(parkVsHang==0){
-                    if(delayNum==0){
-
-                    } else if (delayNum==3){
-
-                    } else if (delayNum==5){
-
-                    }
+                    sleep(1000*delayNum);
                 } else if (parkVsHang==1){
-                    if(delayNum==0){
-
-                    } else if (delayNum==3){
-
-                    } else if (delayNum==5){
-
-                    }
+                    sleep(1000*delayNum);
                 }
             }
         } else if (teamColor==1){
             if(startingPos==0){
                 if(parkVsHang==0){
-                    if(delayNum==0){
-
-                    } else if (delayNum==3){
-
-                    } else if (delayNum==5){
-
-                    }
+                    sleep(1000*delayNum);
                 } else if (parkVsHang==1){
-                    if(delayNum==0){
-
-                    } else if (delayNum==3){
-
-                    } else if (delayNum==5){
-
-                    }
+                    sleep(1000*delayNum);
                 }
             } else if (startingPos==1){
                 if(parkVsHang==0){
-                    if(delayNum==0){
-
-                    } else if (delayNum==3){
-
-                    } else if (delayNum==5){
-
-                    }
+                    sleep(1000*delayNum);
                 } else if (parkVsHang==1){
-                    if(delayNum==0){
-
-                    } else if (delayNum==3){
-
-                    } else if (delayNum==5){
-
-                    }
+                    sleep(1000*delayNum);
                 }
             }
         }
