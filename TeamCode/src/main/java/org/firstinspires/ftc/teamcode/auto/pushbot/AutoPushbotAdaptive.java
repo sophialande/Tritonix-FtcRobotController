@@ -291,46 +291,125 @@ public class AutoPushbotAdaptive extends LinearOpMode {
 //        }
 
 //        }
-
+        telemetry.addLine("team Color, 0 = red, 1 = blue");
+        telemetry.addLine("startingPos, 0 = left, 1 = right");
+        telemetry.addLine("parkVsHang, 0 = only park, 1 = hang then park");
+        telemetry.addLine("delay, enter # seconds");
+        telemetry.update();
 
         waitForStart();
 
-        if(teamColor==0){
-            if(startingPos==0){
-                if(parkVsHang==0){
+        if(teamColor==0){ // red
+            if(startingPos==0){ // left (far)
+                if(parkVsHang==0){ // park rn
                     sleep(1000*delayNum);
-                    Movement.left(this, ports, 1000, telemetry); // moves left
-                    Driver.intakeClaw(this, ports, 0.85); // opens claw
-                    Driver.intakeClaw(this, ports, 0); // closes claw
+                    Driver.drive(this, ports, 1, 250, 90);
+                } else if (parkVsHang==1){ // hang then park
+                    sleep(1000*delayNum);
+                    // close claw
+                    // raise slides
+                    // drive to position
+                    // lower slides
+                    // move back a bit
+                    // release claw
+                    // drive to park
 
-                } else if (parkVsHang==1){
-                    sleep(1000*delayNum);
+                    Driver.outtakeClaw(this, ports, 0.25); // either this or 0
+
+                    lsv_lController.runTo(700);
+                    lsv_rController.runTo(700);
+
+                    Driver.drive(this, ports, 1, 85, 200);
+
+                    lsv_lController.runTo(650);
+                    lsv_rController.runTo(650);
+
+                    Driver.drive(this, ports, 1, 8, 0);
+
+                    Driver.outtakeClaw(this, ports, 0);
+
+                    // drive to park
+                    Driver.drive(this, ports, 1, 260, 135);
+
                 }
-            } else if (startingPos==1){
-                if(parkVsHang==0){
+            } else if (startingPos==1){ // right (close)
+                if(parkVsHang==0){ // park rn
                     sleep(1000*delayNum);
-                } else if (parkVsHang==1){
+                    Driver.drive(this, ports, 1, 150, 180);
+
+                } else if (parkVsHang==1){ // hang then park
                     sleep(1000*delayNum);
+
+                    Driver.outtakeClaw(this, ports, 0.25); // either this or 0
+
+                    lsv_lController.runTo(700);
+                    lsv_rController.runTo(700);
+
+                    Driver.drive(this, ports, 1, 85, 160);
+
+                    lsv_lController.runTo(650);
+                    lsv_rController.runTo(650);
+
+                    Driver.drive(this, ports, 1, 8, 0);
+
+                    Driver.outtakeClaw(this, ports, 0);
+
+                    // drive to park
+                    Driver.drive(this, ports, 1, 200, 135);
+
                 }
             }
-        } else if (teamColor==1){
-            if(startingPos==0){
-                if(parkVsHang==0){
+        } else if (teamColor==1){ // blue
+            if(startingPos==0){ // left (far)
+                if(parkVsHang==0){ // park rn
                     sleep(1000*delayNum);
-                } else if (parkVsHang==1){
+                    Driver.drive(this, ports, 1, 250, 90);
+                } else if (parkVsHang==1){ // hang then park
                     sleep(1000*delayNum);
+                    Driver.outtakeClaw(this, ports, 0.25); // either this or 0
+
+                    lsv_lController.runTo(700);
+                    lsv_rController.runTo(700);
+
+                    Driver.drive(this, ports, 1, 85, 200);
+
+                    lsv_lController.runTo(650);
+                    lsv_rController.runTo(650);
+
+                    Driver.drive(this, ports, 1, 8, 0);
+
+                    Driver.outtakeClaw(this, ports, 0);
+
+                    // drive to park
+                    Driver.drive(this, ports, 1, 260, 135);
                 }
-            } else if (startingPos==1){
-                if(parkVsHang==0){
+            } else if (startingPos==1){ // right (close)
+                if(parkVsHang==0){ // park rn
                     sleep(1000*delayNum);
-                } else if (parkVsHang==1){
+                    Driver.drive(this, ports, 1, 150, 90);
+                } else if (parkVsHang==1){ // hang then park
                     sleep(1000*delayNum);
+                    Driver.outtakeClaw(this, ports, 0.25); // either this or 0
+
+                    lsv_lController.runTo(700);
+                    lsv_rController.runTo(700);
+
+                    Driver.drive(this, ports, 1, 85, 160);
+
+                    lsv_lController.runTo(650);
+                    lsv_rController.runTo(650);
+
+                    Driver.drive(this, ports, 1, 8, 0);
+
+                    Driver.outtakeClaw(this, ports, 0);
+
+                    // drive to park
+                    Driver.drive(this, ports, 1, 200, 135);
                 }
             }
         }
 
         telemetry.update();
-        sleep(10000);
 
     }
 }

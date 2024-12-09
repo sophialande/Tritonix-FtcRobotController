@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.classes.Movement;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
 
 /*
@@ -34,6 +35,7 @@ public class AutoPushbotLeft extends LinearOpMode {
     @Override
     public void runOpMode(){
         //initialize
+        builder = new Ports.Builder();
         builder.wheelsActive = true;
         ports = new Ports(this, builder);
 
@@ -44,9 +46,8 @@ public class AutoPushbotLeft extends LinearOpMode {
 
         //wait for the game to start
         waitForStart();
-
-        drive(this, ports, 0.4, 80, 0);
-        drive(this, ports, 0.4, 300, 180);
+        drive(this, ports, 0.4, 5, 180);
+        drive(this, ports, 0.4, 35, 270);
 
     }
 }

@@ -197,9 +197,13 @@ public class TeleopOpMode extends LinearOpMode {
                     ports.intakePitch.setPosition(0); // fully down
                     intakeInverse = false;
                 } else {
-                    ports.intakePitch.setPosition(0.4); // inside, perpendicular to outtake claw
-                    ports.intakeClaw.setPosition(0.78); // slightly opens intake claw so that it's ready for handoff
+                    ports.intakePitch.setPosition(0.34); // inside, perpendicular to outtake claw
+                    //ports.intakeClaw.setPosition(0.78); // slightly opens intake claw so that it's ready for handoff
                 }
+            }
+
+            if(currGamepad2.right_stick_button && !prevGamepad2.right_stick_button){
+                ports.intakeClaw.setPosition(0.78);
             }
 
             // horizontal rotates intake claw
@@ -209,21 +213,6 @@ public class TeleopOpMode extends LinearOpMode {
                 } else {
                     ports.intakeRoll.setPosition(ports.intakeRoll.getPosition() - elapsedTime.seconds());
                 }
-            }
-
-            // move horizontal slides to the right position for handoff
-            if(currGamepad2.right_bumper) {
-                ports.lsh_l.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                ports.lsh_r.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-                ports.lsh_l.setTargetPosition(460);
-                ports.lsh_r.setTargetPosition(460);
-
-                ports.lsh_l.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                ports.lsh_r.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                ports.lsh_l.setPower(1);
-                ports.lsh_r.setPower(1);
             }
 
 
