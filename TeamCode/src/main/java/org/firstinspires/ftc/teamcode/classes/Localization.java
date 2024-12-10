@@ -42,21 +42,16 @@ public class Localization {
     }
 
     public void loop() {
-//        aprilTagEstimate = aprilTagLocalizer.run();
-//        aprilTagPos = aprilTagEstimate.getPosition();
-//        aprilTagRot = aprilTagEstimate.getOrientation();
+        aprilTagEstimate = aprilTagLocalizer.run();
+        aprilTagPos = aprilTagEstimate.getPosition();
+        aprilTagRot = aprilTagEstimate.getOrientation();
 
         mecanumVelocityEstimate = mecanumLocalizer.loop();
 
-//        if (!(aprilTagPos.x == 0 && aprilTagPos.y == 0 && aprilTagPos.z == 0 && aprilTagRot.getRoll() == 0)){
-//            robotPosition = new Pose3D(new Position(DistanceUnit.INCH,
-//                    aprilTagPos.x - cameraRelativePos.getPosition().x,
-//                    aprilTagPos.y - cameraRelativePos.getPosition().y,
-//                    0, aprilTagPos.acquisitionTime), new YawPitchRollAngles(AngleUnit.DEGREES,
-//                    aprilTagRot.getYaw() - cameraRelativePos.getOrientation().getYaw(),
-//                    0, 0, aprilTagRot.getAcquisitionTime()));
-//            mecanumPositionEstimate = robotPosition;
-//        } else {
+        if (!(aprilTagPos.x == 0 && aprilTagPos.y == 0 && aprilTagPos.z == 0 && aprilTagRot.getRoll() == 0)){
+            robotPosition = aprilTagEstimate;
+            mecanumPositionEstimate = robotPosition;
+        } else {
         // FORMULA: X position = Robot.XCor + (Estimated.XCor*Cos(Estimated.Yaw) - Estimated.YCor*sin(Estimated.Yaw)) * aquisitionTime
         // FORMULA: Y position = Robot.YCor + (Estimated.XCor*Sin(Estimated.Yaw) - Estimated.YCor*cos(Estimated.Yaw)) * aquisitionTime
 
@@ -68,7 +63,7 @@ public class Localization {
                     0, 0), mecanumPositionEstimate.getOrientation());
             opMode.telemetry.addData("position", mecanumPositionEstimate);
             robotPosition = mecanumPositionEstimate;
-//        }
+        }
     }
 
 }

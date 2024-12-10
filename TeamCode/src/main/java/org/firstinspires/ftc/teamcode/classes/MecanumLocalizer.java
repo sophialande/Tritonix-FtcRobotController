@@ -62,7 +62,7 @@ public class MecanumLocalizer {
 
             Pose3D out = new Pose3D(new Position(DistanceUnit.INCH,
                     (double) (diffbr + diffbl)/2,
-                    (double) (diffbr - difffr)/2,
+                    (double) (diffbr - difffr)/2, //This line is the problem with the mecanum localization system.
                     0, elapsedTime.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES,
                     (double) (diffbl - difffr)/2,
                     0, 0, 0));

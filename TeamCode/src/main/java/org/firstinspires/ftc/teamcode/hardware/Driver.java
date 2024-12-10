@@ -20,6 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.classes.AprilTagLocalizer;
 import org.firstinspires.ftc.teamcode.classes.Localization;
 import org.firstinspires.ftc.teamcode.classes.PIDController;
 import org.firstinspires.ftc.teamcode.hardware.Ports;
@@ -328,7 +329,7 @@ public class Driver {
         ports.lsh_l.setPower(power);
     }
 
-    public static void driveToComponent(LinearOpMode opMode, Ports ports, double drive, double strafe, double yaw){
+    public static void driveToComponents(Ports ports, double drive, double strafe, double yaw){
         
         double fr = (drive - strafe - yaw);
         double fl = (drive + strafe + yaw);
@@ -349,6 +350,17 @@ public class Driver {
         ports.fl.setPower(fl);
         ports.bl.setPower(bl);
         ports.br.setPower(br);
+    }
+
+    public static void driveToPos(Ports ports, AprilTagLocalizer aprilTagLocalizer, double x, double y, double yaw){
+        while(!(x<1&&x>-1 && y<1&&y>-1 && yaw<20&&yaw>-20)){
+            Pose3D estimate = aprilTagLocalizer.run();
+            x -= estimate.getPosition().x;
+            y -= estimate.getPosition().y;
+            double x_rot = x*Math.cos(-estimate.getOrientation().getYaw(AngleUnit.RADIANS)) - y*Math.sin(-estimate.getOrientation().getYaw(AngleUnit.RADIANS));
+            double y_rot = x*Math.sin(-estimate.getOrientation().getYaw(AngleUnit.RADIANS)) + y*Math.cos(-estimate.getOrientation().getYaw(AngleUnit.RADIANS));
+            driveToComponents(ports, y_rot, x_rot, yaw-estimate.getOrientation().getYaw()/36000);
+        }
     }
 
 // hi
