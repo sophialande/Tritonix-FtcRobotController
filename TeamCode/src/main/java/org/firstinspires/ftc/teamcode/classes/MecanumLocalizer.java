@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.classes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -62,7 +61,7 @@ public class MecanumLocalizer {
 
             Pose3D out = new Pose3D(new Position(DistanceUnit.INCH,
                     (double) (diffbr + diffbl)/2,
-                    (double) (diffbr - difffr)/2, //This line is the problem with the mecanum localization system.
+                    (double) (diffbr - difffr)/2,
                     0, elapsedTime.time(TimeUnit.SECONDS)), new YawPitchRollAngles(AngleUnit.DEGREES,
                     (double) (diffbl - difffr)/2,
                     0, 0, 0));
